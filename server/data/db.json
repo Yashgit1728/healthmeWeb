@@ -1,0 +1,831 @@
+{
+  "reflections": [
+    {
+      "text": "I feel anxious",
+      "mood": 7,
+      "tags": [],
+      "userId": "test-user",
+      "id": "9ttaznse0",
+      "createdAt": "2025-08-21T05:27:50.920Z"
+    },
+    {
+      "text": "I am feeling very happy now, do you knoewwhy?\n",
+      "mood": 7,
+      "tags": [],
+      "userId": "test-user",
+      "id": "iszwzf4d0",
+      "createdAt": "2025-08-21T05:28:17.919Z"
+    },
+    {
+      "text": "feeling sleepy",
+      "mood": 7,
+      "tags": [],
+      "userId": "test-user",
+      "id": "yjykko6og",
+      "createdAt": "2025-08-21T05:28:53.185Z"
+    },
+    {
+      "text": "ok",
+      "mood": 7,
+      "tags": [],
+      "userId": "test-user",
+      "id": "qfo7g1yjg",
+      "createdAt": "2025-08-21T05:28:59.583Z"
+    },
+    {
+      "text": "nnjn",
+      "mood": 7,
+      "tags": [],
+      "userId": "test-user",
+      "id": "sy9o0l71t",
+      "createdAt": "2025-08-21T05:29:14.301Z"
+    },
+    {
+      "text": "happy",
+      "mood": 6,
+      "tags": [],
+      "userId": "t9llwo0t5",
+      "id": "tmbb38iot",
+      "createdAt": "2025-08-21T16:46:11.729Z"
+    },
+    {
+      "text": "mm m",
+      "mood": 6,
+      "tags": [],
+      "userId": "t9llwo0t5",
+      "id": "soxkq19nb",
+      "createdAt": "2025-08-21T16:49:29.702Z"
+    },
+    {
+      "text": "sad",
+      "mood": 6,
+      "tags": [],
+      "userId": "t9llwo0t5",
+      "id": "ca3khiq1p",
+      "createdAt": "2025-08-21T16:51:40.900Z"
+    },
+    {
+      "text": "happy",
+      "mood": 2,
+      "tags": [],
+      "userId": "t9llwo0t5",
+      "id": "oak17gx1v",
+      "createdAt": "2025-08-21T16:51:50.824Z"
+    },
+    {
+      "text": "happy",
+      "mood": 6,
+      "tags": [],
+      "userId": "t9llwo0t5",
+      "id": "fs0ge0jzx",
+      "createdAt": "2025-08-21T16:54:38.525Z"
+    },
+    {
+      "text": "sad",
+      "mood": 6,
+      "tags": [],
+      "userId": "t9llwo0t5",
+      "id": "df2zn07fz",
+      "createdAt": "2025-08-21T16:54:45.281Z"
+    },
+    {
+      "text": "happy",
+      "mood": 6,
+      "tags": [],
+      "userId": "t9llwo0t5",
+      "id": "0iu5dbzem",
+      "createdAt": "2025-08-21T16:55:28.405Z"
+    },
+    {
+      "text": "stress",
+      "mood": 6,
+      "tags": [],
+      "userId": "t9llwo0t5",
+      "id": "ljepsi2u6",
+      "createdAt": "2025-08-21T16:55:49.543Z"
+    },
+    {
+      "text": "happy",
+      "mood": 6,
+      "tags": [],
+      "userId": "t9llwo0t5",
+      "id": "gknz5f6sb",
+      "createdAt": "2025-08-21T17:31:22.249Z"
+    },
+    {
+      "text": "sad",
+      "mood": 6,
+      "tags": [],
+      "userId": "t9llwo0t5",
+      "id": "6gepgvvhr",
+      "createdAt": "2025-08-21T17:31:33.630Z"
+    },
+    {
+      "text": "happy",
+      "mood": 6,
+      "tags": [],
+      "userId": "t9llwo0t5",
+      "id": "znnilktgm",
+      "createdAt": "2025-08-21T17:42:39.860Z"
+    },
+    {
+      "text": "stress",
+      "mood": 6,
+      "tags": [],
+      "userId": "t9llwo0t5",
+      "id": "vq9m7ojls",
+      "createdAt": "2025-08-21T17:42:47.139Z"
+    },
+    {
+      "text": "happpy",
+      "mood": 6,
+      "tags": [],
+      "userId": "t9llwo0t5",
+      "id": "7dhiyn9ia",
+      "createdAt": "2025-08-21T18:01:13.723Z"
+    },
+    {
+      "text": "hungry",
+      "mood": 6,
+      "tags": [],
+      "userId": "t9llwo0t5",
+      "id": "bbczij0oj",
+      "createdAt": "2025-08-21T18:05:12.271Z"
+    },
+    {
+      "text": "happy",
+      "mood": 6,
+      "tags": [],
+      "userId": "t9llwo0t5",
+      "id": "g5cj7x52m",
+      "createdAt": "2025-08-21T18:23:57.576Z"
+    },
+    {
+      "text": "anxious",
+      "mood": 6,
+      "tags": [],
+      "userId": "t9llwo0t5",
+      "id": "1dyd6rjtn",
+      "createdAt": "2025-08-21T18:24:03.045Z"
+    },
+    {
+      "text": "not well",
+      "mood": 6,
+      "tags": [],
+      "userId": "t9llwo0t5",
+      "id": "usatmk3fu",
+      "createdAt": "2025-08-21T18:28:48.381Z"
+    },
+    {
+      "text": "I'm unable to concentrate on my daily work",
+      "mood": 6,
+      "tags": [],
+      "userId": "t9llwo0t5",
+      "id": "1vvq0n2wg",
+      "createdAt": "2025-08-21T18:29:53.733Z"
+    },
+    {
+      "text": "happy",
+      "mood": 2,
+      "tags": [],
+      "userId": "t9llwo0t5",
+      "id": "tfagl6h0c",
+      "createdAt": "2025-08-21T18:40:36.217Z"
+    },
+    {
+      "text": "#happy",
+      "mood": 6,
+      "tags": [],
+      "userId": "t9llwo0t5",
+      "id": "jwpugzakd",
+      "createdAt": "2025-08-21T18:40:58.437Z"
+    },
+    {
+      "text": "jnjcn",
+      "mood": 6,
+      "tags": [],
+      "userId": "t9llwo0t5",
+      "id": "uy4bj0ive",
+      "createdAt": "2025-08-21T18:41:23.950Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "cold",
+      "mood": 5,
+      "tags": [],
+      "id": "lv9zvot4v",
+      "createdAt": "2025-08-21T19:12:39.269Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "happy",
+      "mood": 5,
+      "tags": [],
+      "id": "f655s81rm",
+      "createdAt": "2025-08-21T19:15:00.183Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "sad",
+      "mood": 5,
+      "tags": [],
+      "id": "se4yxkc6q",
+      "createdAt": "2025-08-21T19:15:14.754Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "happy",
+      "mood": 5,
+      "tags": [],
+      "id": "o7vclfsem",
+      "createdAt": "2025-08-21T19:19:59.725Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "happy",
+      "mood": 5,
+      "tags": [],
+      "id": "516y628jm",
+      "createdAt": "2025-08-21T19:22:39.386Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "I'm feeling tired",
+      "mood": 5,
+      "tags": [],
+      "id": "dtn210qpe",
+      "createdAt": "2025-08-21T19:30:42.145Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "ihbb",
+      "mood": 5,
+      "tags": [],
+      "id": "p4gogcxlq",
+      "createdAt": "2025-08-21T19:31:23.272Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "I'm feeling tired",
+      "mood": 6,
+      "tags": [],
+      "id": "u5c8jbkmz",
+      "createdAt": "2025-08-21T19:36:55.176Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "tired",
+      "mood": 5,
+      "tags": [],
+      "id": "ev5c14fvg",
+      "createdAt": "2025-08-21T19:37:51.907Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "happy",
+      "mood": 5,
+      "tags": [],
+      "id": "rop6isw63",
+      "createdAt": "2025-08-21T19:39:43.067Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "sad",
+      "mood": 5,
+      "tags": [],
+      "id": "k039eb9bs",
+      "createdAt": "2025-08-21T19:39:53.666Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "what should i do",
+      "mood": 5,
+      "tags": [],
+      "id": "49tf4bcq8",
+      "createdAt": "2025-08-21T19:40:05.850Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "happy",
+      "mood": 5,
+      "tags": [],
+      "id": "eiki5zj6k",
+      "createdAt": "2025-08-21T19:46:39.970Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "saved",
+      "mood": 5,
+      "tags": [],
+      "id": "2i9nduod5",
+      "createdAt": "2025-08-21T19:52:06.604Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "good",
+      "mood": 5,
+      "tags": [],
+      "id": "o1cgni242",
+      "createdAt": "2025-08-21T19:52:20.321Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "lnfnkfmfkpamfmfmafmakfmapfmlmmfofzmfl;mc;lmslfms.fslkfmfokflamfol,flaf;.mk;g;lfm",
+      "mood": 5,
+      "tags": [],
+      "id": "gmutzu9vh",
+      "createdAt": "2025-08-21T19:56:24.344Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "happy",
+      "mood": 5,
+      "tags": [],
+      "id": "2hpz4ow5f",
+      "createdAt": "2025-08-21T20:02:00.115Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "ok",
+      "mood": 5,
+      "tags": [],
+      "id": "veb9un343",
+      "createdAt": "2025-08-21T20:02:09.105Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "kj j",
+      "mood": 5,
+      "tags": [],
+      "id": "aphqmqegn",
+      "createdAt": "2025-08-21T20:08:34.380Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "happy",
+      "mood": 5,
+      "tags": [],
+      "id": "5e9uq5s4o",
+      "createdAt": "2025-08-21T20:08:45.777Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "just normal",
+      "mood": 5,
+      "tags": [],
+      "id": "4y2m3m9gh",
+      "createdAt": "2025-08-21T20:09:00.343Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "from the day my friend got job",
+      "mood": 5,
+      "tags": [],
+      "id": "8pbvihzmw",
+      "createdAt": "2025-08-21T20:09:27.234Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "I am feeling confused",
+      "mood": 5,
+      "tags": [],
+      "id": "vkm3o67fd",
+      "createdAt": "2025-08-21T21:36:06.510Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "no idea",
+      "mood": 5,
+      "tags": [],
+      "id": "o3q69fgpi",
+      "createdAt": "2025-08-21T21:36:30.492Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "happy",
+      "mood": 5,
+      "tags": [],
+      "id": "7fvnf3g78",
+      "createdAt": "2025-08-21T21:38:55.825Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "past 1 hour",
+      "mood": 5,
+      "tags": [],
+      "id": "f07gnvetf",
+      "createdAt": "2025-08-21T21:39:11.513Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "jbjkbjkgvykgggi",
+      "mood": 5,
+      "tags": [],
+      "id": "715n3krn8",
+      "createdAt": "2025-08-21T21:39:22.735Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "dhdhdgdgggrg",
+      "mood": 5,
+      "tags": [],
+      "id": "lzoqmowjk",
+      "createdAt": "2025-08-21T21:46:02.869Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "krjgn",
+      "mood": 5,
+      "tags": [],
+      "id": "3so3bw9xr",
+      "createdAt": "2025-08-21T21:52:02.354Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "happy",
+      "mood": 5,
+      "tags": [],
+      "id": "04pnigh8w",
+      "createdAt": "2025-08-21T21:52:10.780Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "normally",
+      "mood": 5,
+      "tags": [],
+      "id": "eflai9jd7",
+      "createdAt": "2025-08-21T21:52:18.544Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "htbjerbirgbrgjbijirjitnnijrtghurhu",
+      "mood": 5,
+      "tags": [],
+      "id": "zmvqo6lly",
+      "createdAt": "2025-08-21T21:52:28.603Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "happy",
+      "mood": 5,
+      "tags": [],
+      "id": "8bt2kuimq",
+      "createdAt": "2025-08-22T02:35:55.293Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "skjjs",
+      "mood": 5,
+      "tags": [],
+      "id": "3j4fzfyee",
+      "createdAt": "2025-08-22T02:36:01.461Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "jnj",
+      "mood": 5,
+      "tags": [],
+      "response": "Thank you for sharing your thoughts with me. 🌟 I can sense that you're going through something right now, and I want you to know that your feelings are valid. It takes courage to express what's on your mind.",
+      "suggestion": {
+        "title": "Ground yourself",
+        "steps": [
+          "Find a comfortable position",
+          "Focus on your breathing for 2 minutes",
+          "Write down one thing you're grateful for"
+        ]
+      },
+      "id": "60000b7b-d5a4-4f7b-8374-e5b426b13c99",
+      "createdAt": "2025-08-22T04:04:16.118Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "happy",
+      "mood": 5,
+      "tags": [],
+      "response": "Thank you for sharing your thoughts with me. 🌟 I can sense that you're going through something right now, and I want you to know that your feelings are valid. It takes courage to express what's on your mind.",
+      "suggestion": {
+        "title": "Ground yourself",
+        "steps": [
+          "Find a comfortable position",
+          "Focus on your breathing for 2 minutes",
+          "Write down one thing you're grateful for"
+        ]
+      },
+      "id": "e0d03482-1096-4885-bcfa-08e7b161abfa",
+      "createdAt": "2025-08-22T04:04:31.024Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "I feel very happy",
+      "mood": 5,
+      "tags": [],
+      "response": "I love hearing the positivity in what you shared! 🌟 It's wonderful that you're experiencing some joy. These moments are worth celebrating.",
+      "suggestion": {
+        "title": "Savor this positive moment",
+        "steps": [
+          "Take a moment to really feel this good feeling",
+          "Write down what made today special",
+          "Share your joy with someone you care about"
+        ]
+      },
+      "id": "497f073f-8179-4d9b-904b-1f6c46d5eb67",
+      "createdAt": "2025-08-22T04:13:27.704Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "I am feeling very sad",
+      "mood": 5,
+      "tags": [],
+      "response": "I can hear that you're going through a tough time right now. What you're feeling is completely valid. You don't have to carry this alone. 💙",
+      "suggestion": {
+        "title": "Ground yourself in this moment",
+        "steps": [
+          "Take 5 slow, deep breaths",
+          "Name 3 things you can see, 2 you can touch, 1 you can hear",
+          "Remind yourself: 'This feeling is temporary, I will get through this'"
+        ]
+      },
+      "id": "e5af0354-a96b-4f5e-bbdc-d060dcd06e85",
+      "createdAt": "2025-08-22T04:13:43.500Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "ok thanks for your supprt on this",
+      "mood": 5,
+      "tags": [],
+      "response": "Thank you for sharing what's on your mind. Sometimes just putting our thoughts into words can be really helpful. 💭 I appreciate you taking the time to reflect and be honest about where you're at right now.",
+      "suggestion": {
+        "title": "Check in with yourself",
+        "steps": [
+          "Ask yourself: 'What do I need right now?'",
+          "Do one small thing that brings you comfort",
+          "Give yourself credit for taking time to reflect"
+        ]
+      },
+      "id": "97dfac8d-d105-4925-a5a5-604af5234e2f",
+      "createdAt": "2025-08-22T04:14:03.624Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "happy an dsad",
+      "mood": 5,
+      "tags": [],
+      "response": "I can hear that you're going through a tough time right now. What you're feeling is completely valid. You don't have to carry this alone. 💙",
+      "suggestion": {
+        "title": "Ground yourself in this moment",
+        "steps": [
+          "Take 5 slow, deep breaths",
+          "Name 3 things you can see, 2 you can touch, 1 you can hear",
+          "Remind yourself: 'This feeling is temporary, I will get through this'"
+        ]
+      },
+      "id": "0c874d2e-173c-4db2-aab9-e93113a91aab",
+      "createdAt": "2025-08-22T04:20:14.758Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "rththththty",
+      "mood": 5,
+      "tags": [],
+      "response": "Thank you for sharing what's on your mind. Sometimes just putting our thoughts into words can be really helpful. 💭 I appreciate you taking the time to reflect and be honest about where you're at right now.",
+      "suggestion": {
+        "title": "Check in with yourself",
+        "steps": [
+          "Ask yourself: 'What do I need right now?'",
+          "Do one small thing that brings you comfort",
+          "Give yourself credit for taking time to reflect"
+        ]
+      },
+      "id": "a1c5929b-8fca-49ca-9295-28ed5a1906ff",
+      "createdAt": "2025-08-22T04:20:38.409Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "fggtfhththhsthtsehwryyrjj",
+      "mood": 5,
+      "tags": [],
+      "response": "Thank you for sharing what's on your mind. Sometimes just putting our thoughts into words can be really helpful. 💭 I appreciate you taking the time to reflect and be honest about where you're at right now.",
+      "suggestion": {
+        "title": "Check in with yourself",
+        "steps": [
+          "Ask yourself: 'What do I need right now?'",
+          "Do one small thing that brings you comfort",
+          "Give yourself credit for taking time to reflect"
+        ]
+      },
+      "id": "6ba3eb23-3f09-42c2-b064-e228ce2fffde",
+      "createdAt": "2025-08-22T04:20:47.311Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "dfrghtyjtksthdsjrsjjdstrty",
+      "mood": 5,
+      "tags": [],
+      "response": "Thank you for sharing what's on your mind. Sometimes just putting our thoughts into words can be really helpful. 💭 I appreciate you taking the time to reflect and be honest about where you're at right now.",
+      "suggestion": {
+        "title": "Check in with yourself",
+        "steps": [
+          "Ask yourself: 'What do I need right now?'",
+          "Do one small thing that brings you comfort",
+          "Give yourself credit for taking time to reflect"
+        ]
+      },
+      "id": "6a20c16d-9acb-482c-94cd-25f93a3e35ab",
+      "createdAt": "2025-08-22T04:20:54.458Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "I am feeling happy",
+      "mood": 5,
+      "tags": [],
+      "response": "{\n  \"intent\": \"positive_sharing\",\n  \"message\": \"That's wonderful to hear you're feeling happy!  What contributed to this positive mood today? 😊\",\n  \"chips\": [\"Gratitude practice\", \"Journal prompt\"]\n}",
+      "suggestion": {
+        "title": "unknown support",
+        "steps": [
+          "Try again",
+          "Take a breath"
+        ]
+      },
+      "id": "dedf85ba-f847-4862-8af9-871a69975a78",
+      "createdAt": "2025-08-22T04:54:21.455Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "I am feeling sad buddy what should I do",
+      "mood": 5,
+      "tags": [],
+      "response": "It sounds like you're having a bit of a down day.  Is there anything small you could do to lift your spirits, even just a little? 🤔",
+      "suggestion": {
+        "title": "short_feeling support",
+        "steps": [
+          "Take a walk",
+          "Call someone",
+          "Try breathing exercise"
+        ]
+      },
+      "id": "cb411615-dbc2-4edc-9055-4277bb7c1f41",
+      "createdAt": "2025-08-22T04:54:51.353Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "no",
+      "mood": 5,
+      "tags": [],
+      "response": "A five, huh?  Sounds like a bit of a mixed bag today.  Is there anything you're looking forward to that might help boost that number?",
+      "suggestion": {
+        "title": "short_feeling support",
+        "steps": [
+          "Take a walk",
+          "Call someone"
+        ]
+      },
+      "id": "a846c87d-8610-4f51-82a6-6a8ed88d22c6",
+      "createdAt": "2025-08-22T04:55:03.211Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "no",
+      "mood": 5,
+      "tags": [],
+      "response": "A five, huh?  Sounds like a bit of a mixed bag today. Is there anything you're looking forward to that might help boost that number?",
+      "suggestion": {
+        "title": "short_feeling support",
+        "steps": [
+          "Take a walk",
+          "Call someone"
+        ]
+      },
+      "id": "eb3960ff-9ead-401b-9bf2-a3d0d5d39f92",
+      "createdAt": "2025-08-22T04:55:18.173Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "happy",
+      "mood": 5,
+      "tags": [],
+      "response": "It sounds like you're feeling a bit of a mix today – happy, but also a 5 out of 10, which suggests some sadness lingers.  What's one small thing that usually brings you a bit of joy?",
+      "suggestion": {
+        "title": "short_feeling support",
+        "steps": [
+          "Gratitude practice",
+          "Take a walk",
+          "Call someone"
+        ]
+      },
+      "id": "09758a65-0881-47af-b655-99ab482c683d",
+      "createdAt": "2025-08-22T12:07:09.166Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "nnkl",
+      "mood": 5,
+      "tags": [],
+      "response": "A 5 today, huh?  It sounds like you're feeling a bit 'blah'.  Is there anything small you could do to shift that feeling, even just a tiny bit?",
+      "suggestion": {
+        "title": "short_feeling support",
+        "steps": [
+          "Take a walk",
+          "Gratitude practice",
+          "Listen to upbeat music"
+        ]
+      },
+      "id": "63623c66-09c2-48a1-9fb0-0be117b3a4f0",
+      "createdAt": "2025-08-22T12:07:37.678Z"
+    }
+  ],
+  "users": [
+    {
+      "email": "yashwanthbandaru1247@gmail.com",
+      "name": "Yash",
+      "passwordHash": "$2b$10$.KjeNIB5xISu8ojI96WBd.8SsSxxe2KtXk0M3ka.ViO0MBrGF9Fsi",
+      "id": "t9llwo0t5",
+      "createdAt": "2025-08-21T06:23:56.862Z"
+    }
+  ],
+  "messages": [
+    {
+      "id": "d34e7a68-9e7c-4b17-951d-bee8bb992402",
+      "userId": "t9llwo0t5",
+      "text": "I am feeling happy",
+      "isUser": true,
+      "createdAt": "2025-08-22T04:54:21.367Z"
+    },
+    {
+      "id": "7ff07aff-a1f2-48e0-9d93-bb301b8cea41",
+      "userId": "t9llwo0t5",
+      "text": "{\n  \"intent\": \"positive_sharing\",\n  \"message\": \"That's wonderful to hear you're feeling happy!  What contributed to this positive mood today? 😊\",\n  \"chips\": [\"Gratitude practice\", \"Journal prompt\"]\n}",
+      "isUser": false,
+      "createdAt": "2025-08-22T04:54:21.401Z"
+    },
+    {
+      "id": "6fe13366-bfd3-4884-a8dc-68757294c06d",
+      "userId": "t9llwo0t5",
+      "text": "I am feeling sad buddy what should I do",
+      "isUser": true,
+      "createdAt": "2025-08-22T04:54:51.271Z"
+    },
+    {
+      "id": "3361a6f6-6c08-4fde-b205-1ab378f33e43",
+      "userId": "t9llwo0t5",
+      "text": "It sounds like you're having a bit of a down day.  Is there anything small you could do to lift your spirits, even just a little? 🤔",
+      "isUser": false,
+      "createdAt": "2025-08-22T04:54:51.308Z"
+    },
+    {
+      "id": "e085439e-79e1-4b3d-823c-7b7daf25ac24",
+      "userId": "t9llwo0t5",
+      "text": "no",
+      "isUser": true,
+      "createdAt": "2025-08-22T04:55:03.152Z"
+    },
+    {
+      "id": "30ea608d-b062-4052-9565-a04b21110b04",
+      "userId": "t9llwo0t5",
+      "text": "A five, huh?  Sounds like a bit of a mixed bag today.  Is there anything you're looking forward to that might help boost that number?",
+      "isUser": false,
+      "createdAt": "2025-08-22T04:55:03.177Z"
+    },
+    {
+      "id": "291a00b0-7110-4910-9b90-6f05e6a1cc4e",
+      "userId": "t9llwo0t5",
+      "text": "no",
+      "isUser": true,
+      "createdAt": "2025-08-22T04:55:18.105Z"
+    },
+    {
+      "id": "a517c431-cde2-4737-ab59-0d3776162749",
+      "userId": "t9llwo0t5",
+      "text": "A five, huh?  Sounds like a bit of a mixed bag today. Is there anything you're looking forward to that might help boost that number?",
+      "isUser": false,
+      "createdAt": "2025-08-22T04:55:18.134Z"
+    },
+    {
+      "id": "7ce4cc7f-c071-4cd3-b057-a0ef249de96f",
+      "userId": "t9llwo0t5",
+      "text": "happy",
+      "isUser": true,
+      "createdAt": "2025-08-22T12:07:09.060Z"
+    },
+    {
+      "id": "7d306103-47d4-428c-ace6-761bd2f8e21a",
+      "userId": "t9llwo0t5",
+      "text": "It sounds like you're feeling a bit of a mix today – happy, but also a 5 out of 10, which suggests some sadness lingers.  What's one small thing that usually brings you a bit of joy?",
+      "isUser": false,
+      "createdAt": "2025-08-22T12:07:09.115Z"
+    },
+    {
+      "id": "839a04e3-5c2a-45da-87de-78d610104229",
+      "userId": "t9llwo0t5",
+      "text": "nnkl",
+      "isUser": true,
+      "createdAt": "2025-08-22T12:07:37.549Z"
+    },
+    {
+      "id": "1af2a416-f660-45e3-be8b-95c332a0d068",
+      "userId": "t9llwo0t5",
+      "text": "A 5 today, huh?  It sounds like you're feeling a bit 'blah'.  Is there anything small you could do to shift that feeling, even just a tiny bit?",
+      "isUser": false,
+      "createdAt": "2025-08-22T12:07:37.619Z"
+    }
+  ]
+}
