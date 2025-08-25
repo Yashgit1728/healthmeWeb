@@ -28,10 +28,6 @@ interface Reflection {
   mood?: number;
   tags?: string[];
   response: string;
-  suggestion: {
-    title: string;
-    steps: string[];
-  };
   createdAt: Date;
 }
 

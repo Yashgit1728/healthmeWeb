@@ -11,10 +11,9 @@ interface Message {
 
 interface ChatContainerProps {
   messages: Message[];
-  onQuickActionClick?: (action: string) => void;
 }
 
-export function ChatContainer({ messages, onQuickActionClick }: ChatContainerProps) {
+export function ChatContainer({ messages }: ChatContainerProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   // Scroll to bottom when messages change
@@ -42,7 +41,8 @@ export function ChatContainer({ messages, onQuickActionClick }: ChatContainerPro
   return (
     <div 
       ref={containerRef}
-      className="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth"
+      className="h-full overflow-y-auto p-4 space-y-4 scroll-smooth"
+      style={{ maxHeight: '100%' }}
     >
       {messages.map((message) => (
         <ChatMessage
@@ -51,7 +51,6 @@ export function ChatContainer({ messages, onQuickActionClick }: ChatContainerPro
           isUser={message.isUser}
           timestamp={message.timestamp}
           isTyping={message.isTyping}
-          onQuickActionClick={onQuickActionClick}
         />
       ))}
     </div>

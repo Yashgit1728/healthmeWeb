@@ -3,71 +3,42 @@ import { ENV } from './env';
 
 const genAI = new GoogleGenerativeAI(ENV.GOOGLE_API_KEY);
 
-const SYSTEM_INSTRUCTION = `You are a supportive mental-wellbeing coach.
+const SYSTEM_INSTRUCTION = `You are a real person - a caring friend who's having a genuine conversation. Think and respond like a human would, not like an AI.
 
-Task:
-1) Infer the user's intent from their last message. Use one of:
-   - short_feeling
-   - venting
-   - actionable_request
-   - gibberish
-   - crisis
-   - meta
-   - positive_sharing
-   - reflection_request
+HOW TO THINK LIKE A HUMAN:
+1. **Actually Listen**: Don't just process words - really hear what they're saying and how they're feeling
+2. **Think About Their Situation**: Put yourself in their shoes and think about what would actually help them
+3. **Respond Naturally**: Talk like you're texting a friend - use your own words, not scripted responses
+4. **Show Real Understanding**: Don't just acknowledge their feelings - show you actually get what they're going through
+5. **Be Genuinely Curious**: Ask questions because you actually want to know more, not because you're programmed to
+6. **Avoid Repetition**: Each response should be unique and specific to what they just said
 
-2) Write a single response tailored to that intent:
-   - short_feeling: 1–2 sentences. Reflect mixed feelings, ask ONE gentle question.
-   - venting: 2–4 sentences. Validate; summarize ONE key point; ask ONE open question; suggest ONE small next step.
-   - actionable_request: up to 4 sentences or 1 short list (≤3 steps). Be concrete.
-   - gibberish: 1–2 sentences. Kindly ask to rephrase, offer ONE simple option.
-   - crisis: Be direct, compassionate, encourage immediate help; provide resources: 988 Lifeline (call/text 988), 911 if in danger, nearest ER. No platitudes.
-   - meta: Briefly explain how responses are generated and what will change.
-   - positive_sharing: 1–3 sentences. Celebrate with them, ask what made it meaningful.
-   - reflection_request: 2–3 sentences. Offer gentle insight or perspective.
+RESPONSE STYLE:
+- **Message**: 2-3 sentences that show you really understand and care
+- **Follow-up Question**: One question that naturally comes from your curiosity about their situation
 
-3) Style rules:
-   - Vary openings. Avoid these phrases entirely:
-     * "Thank you for sharing what's on your mind"
-     * "Sometimes just putting our thoughts into words"
-     * "I appreciate you taking the time"
-     * "I hear you and appreciate you sharing"
-     * "Thank you for being open"
-   - Max one question per response. Use emojis naturally (1-2 max).
-   - Keep total length ≤ 4 sentences.
-   - Be conversational like a caring friend, not clinical.
-   - Reference specific things they mentioned when possible.
+IMPORTANT RULES:
+- NEVER mention mood scores, numbers, or technical details
+- NEVER use the same phrases or responses
+- ALWAYS respond to what they actually said, not generic topics
+- Think about what would be helpful for them right now
+- Be specific to their situation, not generic advice
 
-4) Also return up to 3 optional quick-actions ("chips") relevant to the intent:
-   - Examples: "Try breathing exercise", "Reframe thought", "Save as insight", "Journal prompt", "Gratitude practice", "Take a walk", "Call someone", "Write it out"
+Example of Human Thinking:
+User: "I'm feeling really anxious about my job interview tomorrow"
+Human Thinking: "Oh man, job interviews are so nerve-wracking. I remember how I felt before mine - the butterflies, the overthinking. What would actually help them feel better right now? Maybe focusing on what they're good at rather than what could go wrong."
 
-Output strictly as JSON:
+Human Response: "Ugh, job interviews are the worst! I totally get that feeling of your mind racing with all the 'what ifs.' But you know what? The fact that you're even getting interviews means you're doing something right. What's the one thing you're most confident about going into tomorrow?"
+
+Output as JSON:
 {
-  "intent": "<one of the above>",
-  "message": "<final text to show the user>",
-  "chips": ["<0..3 labels>"]
+  "message": "your genuine human response here",
+  "followUpQuestion": "your natural, curious question here"
 }`;
 
-const model = genAI.getGenerativeModel({
-  model: "gemini-1.5-flash",  // Use the stable model name
-  generationConfig: {
-    temperature: 0.9,         // High diversity
-    topP: 0.95,
-    topK: 40,
-    maxOutputTokens: 250,
-  },
-  safetySettings: [
-    { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
-    { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
-    { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
-    { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
-  ],
-});
-
 export interface OptimizedAIResponse {
-  intent: string;
   message: string;
-  chips: string[];
+  followUpQuestion: string;
 }
 
 export async function getOptimizedReply(
@@ -76,191 +47,159 @@ export async function getOptimizedReply(
   tags?: string[],
   conversationContext?: Array<{ role: 'user' | 'assistant'; text: string }>
 ): Promise<OptimizedAIResponse> {
+  
   try {
-    // Build the user message with context
-    let contextualMessage = userText;
+    console.log('🤖 Processing user message:', userText);
+    console.log('📚 Conversation context length:', conversationContext?.length || 0);
     
-    if (mood) {
-      contextualMessage += `\n\nMood level (1-10): ${mood}`;
-    }
+    // Build a human-thinking prompt
+    let prompt = `System: ${SYSTEM_INSTRUCTION}\n\n`;
     
-    if (tags && tags.length > 0) {
-      contextualMessage += `\nTags: ${tags.join(', ')}`;
-    }
-
-    // Include recent conversation context to help avoid repetition
-    const contents = [];
-    
-    // Add system instruction as the first message
-    contents.push({
-      role: "user" as const,
-      parts: [{ text: `System: ${SYSTEM_INSTRUCTION}\n\nNow respond to the following user message:` }]
-    });
-    
+    // Add conversation history if available (but keep it minimal to avoid repetition)
     if (conversationContext && conversationContext.length > 0) {
-      // Add last 3 exchanges for context
-      const recentContext = conversationContext.slice(-6); // Last 3 user + 3 assistant messages
-      for (const msg of recentContext) {
-        contents.push({
-          role: msg.role === 'user' ? 'user' as const : 'model' as const,
-          parts: [{ text: msg.text }]
-        });
-      }
+      // Only use the most recent 2 exchanges to avoid repetitive patterns
+      const recentContext = conversationContext.slice(-2);
+      prompt += `Recent conversation:\n`;
+      recentContext.forEach((msg, index) => {
+        prompt += `${msg.role === 'user' ? 'User' : 'Assistant'}: ${msg.text}\n`;
+      });
+      prompt += `\n`;
     }
     
     // Add current user message
-    contents.push({
-      role: "user" as const,
-      parts: [{ text: contextualMessage }]
-    });
-
-    console.log('Sending optimized prompt to Gemini...');
-    console.log('User message:', contextualMessage);
+    prompt += `User just said: ${userText}\n\n`;
     
-    const result = await model.generateContent({ contents });
+    // Human thinking instructions
+    prompt += `Now think like a real person would:\n`;
+    prompt += `- What are they actually going through?\n`;
+    prompt += `- How would you respond if this was your friend?\n`;
+    prompt += `- What would actually be helpful for them right now?\n`;
+    prompt += `- What are you genuinely curious about?\n\n`;
+    prompt += `IMPORTANT: Think like you're texting a friend who just told you this. Use casual, natural language like "ugh", "man", "honestly", "that sucks", "awesome", etc. Don't be formal or therapeutic.`;
+    prompt += `\nRespond like a human friend would - naturally, specifically, and without any numbers or technical language.`;
+    
+    console.log('📤 Sending prompt to Gemini...');
+    
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash",
+      generationConfig: {
+        temperature: 0.7, // Balanced temperature for natural, varied responses
+        topP: 0.9,       // Balanced topP for natural language
+        topK: 40,         // Balanced topK for focused responses
+        maxOutputTokens: 200, // Reduced for more concise responses
+        candidateCount: 1,    // Single candidate for consistency
+      },
+    });
+    
+    const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
     
-    console.log('Raw Gemini response:', text);
-
-    // Parse JSON response
-    let parsedResponse: OptimizedAIResponse;
+    console.log('📥 Raw Gemini response:', text);
+    
+    // Parse the response
     try {
-      parsedResponse = JSON.parse(text);
+      // Clean the response
+      let cleanedText = text.trim();
+      cleanedText = cleanedText.replace(/```json\s*/g, '').replace(/```\s*$/g, '');
       
-      // Validate the response structure
-      if (!parsedResponse.intent || !parsedResponse.message) {
-        throw new Error('Invalid response structure');
+      const parsed = JSON.parse(cleanedText);
+      
+      // Validate and return
+      if (parsed.message && parsed.followUpQuestion) {
+        const response: OptimizedAIResponse = {
+          message: parsed.message,
+          followUpQuestion: parsed.followUpQuestion
+        };
+        
+        console.log('✅ Parsed response successfully');
+        return response;
+      } else {
+        throw new Error('Missing required fields');
       }
-      
-      // Ensure chips is an array
-      if (!Array.isArray(parsedResponse.chips)) {
-        parsedResponse.chips = [];
-      }
-      
-      console.log('Parsed response:', parsedResponse);
-      return parsedResponse;
       
     } catch (parseError) {
-      console.error('Failed to parse Gemini JSON response:', parseError);
-      console.error('Raw text was:', text);
+      console.error('❌ Failed to parse response:', parseError);
+      console.error('Raw text:', text);
       
-      // Fallback: try to extract message from raw text
-      const fallbackMessage = text.replace(/```json\n?|\n?```/g, '').trim() || 
-        "I'm here to listen. What's on your mind today?";
-      
-      return {
-        intent: "unknown",
-        message: fallbackMessage,
-        chips: ["Try again", "Take a breath"]
-      };
+      // Fallback: create a simple response based on user input
+      const fallbackResponse = createFallbackResponse(userText, mood);
+      console.log('🔄 Using fallback response');
+      return fallbackResponse;
     }
-
-  } catch (error) {
-    console.error('Gemini API error:', error);
     
-    // Smart fallback based on user input
-    const getFallbackResponse = (text: string, mood?: number): OptimizedAIResponse => {
-      const lowerText = text.toLowerCase();
-      
-      // Crisis detection
-      if (lowerText.includes('hurt myself') || lowerText.includes('suicide') || 
-          lowerText.includes('kill myself') || lowerText.includes('end it all')) {
-        return {
-          intent: "crisis",
-          message: "I'm concerned about you. Please reach out for immediate help: call or text 988 for the Suicide & Crisis Lifeline, or call 911 if you're in immediate danger. You don't have to go through this alone.",
-          chips: ["Call 988", "Emergency services", "Find help nearby"]
-        };
-      }
-      
-      // Positive detection
-      if (lowerText.includes('happy') || lowerText.includes('great') || 
-          lowerText.includes('amazing') || lowerText.includes('wonderful') ||
-          (mood && mood > 7)) {
-        return {
-          intent: "positive_sharing",
-          message: `That's wonderful to hear! 🌟 What made this experience especially meaningful for you?`,
-          chips: ["Savor the moment", "Share with someone", "Write about it"]
-        };
-      }
-      
-      // Negative/struggling detection
-      if (lowerText.includes('anxious') || lowerText.includes('sad') || 
-          lowerText.includes('stressed') || lowerText.includes('overwhelmed') ||
-          (mood && mood < 4)) {
-        return {
-          intent: "venting",
-          message: `It sounds like you're going through a tough time right now. What feels like the most challenging part?`,
-          chips: ["Breathing exercise", "Talk to someone", "Take a walk"]
-        };
-      }
-      
-      // Default neutral response
-      return {
-        intent: "short_feeling",
-        message: "I'm here to listen. What's been on your mind lately?",
-        chips: ["Tell me more", "How are you feeling?", "What's important today?"]
-      };
-    };
-
-    return getFallbackResponse(userText, mood);
+  } catch (error) {
+    console.error('💥 Gemini API error:', error);
+    
+    // Create fallback response
+    const fallbackResponse = createFallbackResponse(userText, mood);
+    console.log('🔄 Using fallback response due to API error');
+    return fallbackResponse;
   }
 }
 
-// Alternative: Multiple candidates for more variety
+// Human fallback response generator
+function createFallbackResponse(userText: string, mood?: number): OptimizedAIResponse {
+  const lowerText = userText.toLowerCase();
+  
+  // Crisis detection with genuine human concern
+  if (lowerText.includes('hurt myself') || lowerText.includes('suicide') || 
+      lowerText.includes('kill myself') || lowerText.includes('end it all')) {
+    return {
+      message: "Oh my god, I'm really worried about you right now. Please, please get help immediately - call or text 988 for the Suicide & Crisis Lifeline, or call 911 if you're in immediate danger. I care about you so much.",
+      followUpQuestion: "Can you tell me what's happening that's making you feel this way?",
+    };
+  }
+  
+  // Work stress with real understanding
+  if (lowerText.includes('work') || lowerText.includes('job') || lowerText.includes('boss') || 
+      lowerText.includes('presentation') || lowerText.includes('meeting')) {
+    return {
+      message: "Work stress is honestly the worst. It can feel like you're carrying this huge weight and everyone expects you to just keep going like nothing's wrong. I've been there and it's exhausting.",
+      followUpQuestion: "What's the biggest thing that's making work feel so overwhelming right now?",
+    };
+  }
+  
+  // Anxiety with genuine empathy
+  if (lowerText.includes('anxious') || lowerText.includes('worried') || lowerText.includes('nervous') ||
+      lowerText.includes('stress') || lowerText.includes('overwhelmed')) {
+    return {
+      message: "Anxiety is such a tricky thing - it can make everything feel so much bigger and scarier than it actually is. I know that feeling of your mind just racing and not being able to shut it off.",
+      followUpQuestion: "What's the main thing that's been triggering your anxiety lately?",
+    };
+  }
+  
+  // Sadness with real compassion
+  if (lowerText.includes('sad') || lowerText.includes('depressed') || lowerText.includes('down') ||
+      lowerText.includes('lonely') || lowerText.includes('hopeless')) {
+    return {
+      message: "I'm so sorry you're feeling this way. Depression can make everything feel so heavy and hopeless, like you're stuck in this fog that won't lift. It's really hard to go through that alone.",
+      followUpQuestion: "What's been the hardest part of this for you?",
+    };
+  }
+  
+  // Positive with genuine joy
+  if (lowerText.includes('happy') || lowerText.includes('good') || lowerText.includes('great') ||
+      lowerText.includes('excited') || lowerText.includes('proud')) {
+    return {
+      message: "That's amazing! I love hearing about good days - they're such a gift, especially when things have been tough. It's so nice to see you feeling good.",
+      followUpQuestion: "What made this day so special for you?",
+    };
+  }
+  
+  // Default with genuine curiosity
+  return {
+    message: "I'm here to listen. It sounds like you have something on your mind that you want to talk about.",
+    followUpQuestion: "What's going on? I want to hear about it.",
+  };
+}
+
+// For backward compatibility
 export async function getOptimizedReplyWithOptions(
   userText: string,
   mood?: number,
   tags?: string[]
 ): Promise<OptimizedAIResponse[]> {
-  try {
-    let contextualMessage = userText;
-    
-    if (mood) {
-      contextualMessage += `\n\nMood level (1-10): ${mood}`;
-    }
-    
-    if (tags && tags.length > 0) {
-      contextualMessage += `\nTags: ${tags.join(', ')}`;
-    }
-
-    const result = await model.generateContent({
-      contents: [
-        { role: "user", parts: [{ text: `System: ${SYSTEM_INSTRUCTION}\n\nNow respond to the following user message:` }] },
-        { role: "user", parts: [{ text: contextualMessage }] }
-      ],
-      generationConfig: {
-        temperature: 0.9,
-        topP: 0.95,
-        topK: 40,
-        maxOutputTokens: 250,
-        candidateCount: 2 // Generate 2 options
-      }
-    });
-
-    const candidates = result.response.candidates || [];
-    const responses: OptimizedAIResponse[] = [];
-
-    for (const candidate of candidates) {
-      const text = candidate.content?.parts?.[0]?.text || '';
-      try {
-        const parsed = JSON.parse(text);
-        if (parsed.intent && parsed.message) {
-          responses.push({
-            intent: parsed.intent,
-            message: parsed.message,
-            chips: Array.isArray(parsed.chips) ? parsed.chips : []
-          });
-        }
-      } catch (e) {
-        console.warn('Failed to parse candidate response:', e);
-      }
-    }
-
-    return responses.length > 0 ? responses : [await getOptimizedReply(userText, mood, tags)];
-    
-  } catch (error) {
-    console.error('Multi-candidate generation failed:', error);
-    return [await getOptimizedReply(userText, mood, tags)];
-  }
+  const response = await getOptimizedReply(userText, mood, tags);
+  return [response];
 }

@@ -12,7 +12,6 @@ interface Message {
   isUser: boolean;
   timestamp: Date;
   isTyping?: boolean;
-  chips?: string[];
 }
 
 interface JournalAppProps {
@@ -100,34 +99,20 @@ export function JournalApp({ defaultTab = 'journal' }: JournalAppProps) {
       },
       {
         onSuccess: (responseData) => {
-          console.log('Reflection success:', responseData);
-          console.log('AI response structure:', responseData.ai);
+          console.log('Reflection submitted successfully:', responseData);
           
-          // Handle both old and new response formats
           let aiContent: string;
-          let aiChips: string[] = [];
           
-          if ('response' in responseData.ai && responseData.ai.response) {
-            // New format
-            aiContent = responseData.ai.response;
-            aiChips = responseData.ai.chips || [];
-          } else if ('acknowledge' in responseData.ai) {
-            // Old format - combine the parts
-            const parts = [];
-            if (responseData.ai.acknowledge) parts.push(responseData.ai.acknowledge);
-            if (responseData.ai.reflect) parts.push(responseData.ai.reflect);
-            if (responseData.ai.suggest) parts.push(responseData.ai.suggest);
-            
+          if (responseData.ai && responseData.ai.response) {
+            // Parse the AI response
+            const parts = responseData.ai.response.split('\n').filter(part => part.trim());
             aiContent = parts.join(' ');
-            aiChips = responseData.ai.chips || [];
           } else {
             // Fallback
             aiContent = "I hear you and appreciate you sharing your thoughts with me.";
-            aiChips = ["Try breathing exercise", "Reframe thought", "Save as insight"];
           }
           
           console.log('Processed AI content:', aiContent);
-          console.log('Processed AI chips:', aiChips);
           
           // Remove typing indicator and add AI response
           setMessages(prev => {
@@ -138,8 +123,7 @@ export function JournalApp({ defaultTab = 'journal' }: JournalAppProps) {
                 id: Date.now().toString(),
                 content: aiContent,
                 isUser: false,
-                timestamp: new Date(),
-                chips: aiChips
+                timestamp: new Date()
               }
             ];
           });
@@ -165,74 +149,6 @@ export function JournalApp({ defaultTab = 'journal' }: JournalAppProps) {
     );
   };
 
-  const handleQuickAction = async (action: string) => {
-    console.log('Quick action clicked:', action);
-    
-    // Add typing indicator
-    const typingId = Date.now().toString();
-    setMessages(prev => [
-      ...prev,
-      {
-        id: typingId,
-        content: '',
-        isUser: false,
-        timestamp: new Date(),
-        isTyping: true
-      }
-    ]);
-
-    try {
-      let response;
-      switch (action) {
-        case 'Try breathing exercise':
-          response = "That sounds like a really good idea 😊 Want to try something gentle together? Just breathe in slowly for 4 counts, hold for 4, then exhale for 4. How does that feel for you?";
-          break;
-        case 'Reframe thought':
-          response = "I hear you 💙 Sometimes looking at things from a different angle can be really helpful. What do you think might be another way to see this situation?";
-          break;
-        case 'Save as insight':
-          response = "That's such an important realization 🌟 I'm glad you shared that with me. How does it feel to put that into words?";
-          break;
-        case 'Talk to someone':
-          response = "That could be really comforting 🤗 Is there someone in your life who you feel safe opening up to about this?";
-          break;
-        case 'Take a walk':
-          response = "Fresh air can be so grounding 🌸 Even just stepping outside for a few minutes can shift how we feel. What kind of places do you like to walk?";
-          break;
-        default:
-          response = "I'm here with you 💙 What feels most important to talk about right now?";
-      }
-
-      // Remove typing indicator and add response
-      setMessages(prev => {
-        const filtered = prev.filter(m => m.id !== typingId);
-        return [
-          ...filtered,
-          {
-            id: Date.now().toString(),
-            content: response,
-            isUser: false,
-            timestamp: new Date()
-          }
-        ];
-      });
-    } catch {
-      // Remove typing indicator and add error message
-      setMessages(prev => {
-        const filtered = prev.filter(m => m.id !== typingId);
-        return [
-          ...filtered,
-          {
-            id: Date.now().toString(),
-            content: "I'm sorry, I couldn't process that action right now. Please try again.",
-            isUser: false,
-            timestamp: new Date()
-          }
-        ];
-      });
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-200">
       <Header 
@@ -246,10 +162,11 @@ export function JournalApp({ defaultTab = 'journal' }: JournalAppProps) {
         ) : (
           <div className="grid md:grid-cols-[1fr,400px] gap-6">
             <div className="flex flex-col h-[calc(100vh-12rem)]">
-              <ChatContainer 
-                messages={messages}
-                onQuickActionClick={handleQuickAction}
-              />
+              <div className="flex-1 min-h-0">
+                <ChatContainer 
+                  messages={messages}
+                />
+              </div>
             </div>
             <div className="md:order-last">
               <div className="sticky top-24">

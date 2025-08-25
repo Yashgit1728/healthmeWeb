@@ -6,10 +6,39 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ENV = void 0;
 const path_1 = __importDefault(require("path"));
 const dotenv_1 = __importDefault(require("dotenv"));
-// Load .env from the server root (one level above dist at runtime)
-dotenv_1.default.config({
-    path: path_1.default.resolve(__dirname, "../.env"),
+// Try to load .env from multiple possible locations
+// This handles both development (ts-node) and production (dist) scenarios
+const possiblePaths = [
+    path_1.default.resolve(__dirname, "../../.env"), // From dist folder
+    path_1.default.resolve(__dirname, "../.env"), // From src folder  
+    path_1.default.resolve(process.cwd(), ".env"), // From current working directory
+    path_1.default.resolve(process.cwd(), "server/.env"), // From server subdirectory
+];
+let envLoaded = false;
+for (const envPath of possiblePaths) {
+    try {
+        const result = dotenv_1.default.config({ path: envPath });
+        if (result.parsed) {
+            console.log(`Environment loaded from: ${envPath}`);
+            envLoaded = true;
+            break;
+        }
+    }
+    catch (error) {
+        // Continue to next path
+    }
+}
+if (!envLoaded) {
+    console.warn("No .env file found in any of the expected locations");
+}
+// Debug: Show current working directory and __dirname
+console.log("Debug info:", {
+    cwd: process.cwd(),
+    __dirname: __dirname,
+    possiblePaths: possiblePaths
 });
+// Debug: Show what environment variables we have
+console.log("Available env vars:", Object.keys(process.env).filter(key => key.includes('GOOGLE') || key.includes('JWT') || key.includes('PORT')));
 // Validate required envs once here
 function must(name) {
     const v = process.env[name];
