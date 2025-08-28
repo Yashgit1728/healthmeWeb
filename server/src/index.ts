@@ -51,7 +51,12 @@ const aiLimiter = rateLimit({
 // Middleware
 app.use(cors({ 
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://yourdomain.com'] // Update with your production domain
+    ? [
+        'https://healthmeweb.netlify.app',  // Your Netlify domain
+        'https://healthme.com',             // Your custom domain (if you have one)
+        'http://localhost:5173',            // Local development
+        'http://localhost:3000'             // Local development
+      ]
     : ['http://localhost:5173', 'http://localhost:3000'],
   credentials: true
 }));
