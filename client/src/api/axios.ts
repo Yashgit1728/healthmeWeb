@@ -1,7 +1,15 @@
 import axios from 'axios';
 
+// Get API URL from environment variable, fallback to localhost for development
+const getApiUrl = () => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  return 'http://localhost:3000';
+};
+
 const api = axios.create({
-  baseURL: 'http://localhost:3000', // Base URL without /api prefix since we removed it from server
+  baseURL: getApiUrl(),
   withCredentials: true, // This enables sending/receiving cookies
   headers: {
     'Content-Type': 'application/json'
