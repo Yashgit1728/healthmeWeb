@@ -3,8 +3,9 @@ services:
     name: healthme-backend
     env: node
     plan: free
-    buildCommand: cd server && npm ci && npm run build && echo "Build completed successfully" && ls -la dist/
-    startCommand: cd server && echo "Starting server..." && npm run start
+    rootDir: server
+    buildCommand: npm ci --include=dev && npm run build && ls -la && ls -la dist
+    startCommand: npm run start
     envVars:
       - key: NODE_ENV
         value: production
@@ -14,5 +15,7 @@ services:
         generateValue: true
       - key: GOOGLE_API_KEY
         sync: false
+      - key: NODE_VERSION
+        value: 20
     healthCheckPath: /health
     autoDeploy: true

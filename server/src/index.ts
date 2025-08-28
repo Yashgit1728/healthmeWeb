@@ -183,7 +183,7 @@ app.use('*', (req: Request, res: Response) => {
   });
 });
 
-app.listen(Number(ENV.PORT), () => {
+app.listen(Number(ENV.PORT), '0.0.0.0', () => {
   console.log(`🚀 Server running on port ${ENV.PORT}`);
   console.log(`📊 Health check: http://localhost:${ENV.PORT}/health`);
   console.log(`🔍 Status: http://localhost:${ENV.PORT}/status`);
