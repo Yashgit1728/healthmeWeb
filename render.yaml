@@ -3,8 +3,8 @@ services:
     name: healthme-backend
     env: node
     plan: free
-    buildCommand: cd server && npm ci && npm run build
-    startCommand: cd server && npm run start
+    buildCommand: cd server && npm ci && npm run build && echo "Build completed successfully" && ls -la dist/
+    startCommand: cd server && echo "Starting server..." && npm run start
     envVars:
       - key: NODE_ENV
         value: production

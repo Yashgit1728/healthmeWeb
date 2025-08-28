@@ -50,9 +50,9 @@ function must(name: string) {
 }
 
 export const ENV = {
-  GOOGLE_API_KEY: must("GOOGLE_API_KEY"),
+  GOOGLE_API_KEY: process.env.GOOGLE_API_KEY || "",
   PORT: process.env.PORT || "3000",
-  JWT_SECRET: must("JWT_SECRET"),
+  JWT_SECRET: process.env.JWT_SECRET || "",
   NODE_ENV: process.env.NODE_ENV || "development"
 };
 
