@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "rimraf dist && tsc",
+    "build": "echo 'Cleaning dist folder...' && rimraf dist && echo 'Compiling TypeScript...' && tsc && echo 'Build complete. Contents of dist:' && ls -la dist/",
     "start": "node dist/index.js",
     "dev": "ts-node -r dotenv/config src/index.ts",
     "clean": "rimraf dist"
