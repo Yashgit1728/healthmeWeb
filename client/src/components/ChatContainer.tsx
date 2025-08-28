@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect, useRef, RefObject } from 'react';
 import { ChatMessage } from './ChatMessage';
 
 interface Message {
@@ -7,32 +7,42 @@ interface Message {
   isUser: boolean;
   timestamp: Date;
   isTyping?: boolean;
+  suggestions?: {
+    suggestions: Array<{
+      title: string;
+      description: string;
+      steps: string[];
+      whyItHelps: string;
+    }>;
+    summary: string;
+    category: string;
+  };
 }
 
 interface ChatContainerProps {
   messages: Message[];
+  containerRef?: RefObject<HTMLDivElement | null>;
 }
 
-export function ChatContainer({ messages }: ChatContainerProps) {
-  const containerRef = React.useRef<HTMLDivElement>(null);
+export function ChatContainer({ messages, containerRef: externalRef }: ChatContainerProps) {
+  const internalRef = useRef<HTMLDivElement>(null);
+  const containerRef = externalRef || internalRef;
 
-  // Scroll to bottom when messages change
-  React.useEffect(() => {
+  console.log('ChatContainer received messages:', messages);
+
+  useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, containerRef]);
 
   if (messages.length === 0) {
     return (
-      <div className="flex-1 flex items-center justify-center p-6 text-center">
-        <div className="max-w-sm">
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-            Welcome to Your Journal
-          </h3>
-          <p className="text-gray-600 dark:text-gray-400">
-            Share your thoughts and feelings, and I'll be here to listen and reflect with you.
-          </p>
+      <div className="h-full flex items-center justify-center">
+        <div className="text-center text-gray-500 dark:text-gray-400">
+          <div className="text-6xl mb-4">💭</div>
+          <h3 className="text-xl font-semibold mb-2">Welcome to Your Journal</h3>
+          <p className="text-sm">Share your thoughts and feelings, and I'll be here to listen and support you.</p>
         </div>
       </div>
     );
@@ -42,7 +52,7 @@ export function ChatContainer({ messages }: ChatContainerProps) {
     <div 
       ref={containerRef}
       className="h-full overflow-y-auto p-4 space-y-4 scroll-smooth"
-      style={{ maxHeight: '100%' }}
+      style={{ height: '100%' }}
     >
       {messages.map((message) => (
         <ChatMessage
@@ -51,6 +61,7 @@ export function ChatContainer({ messages }: ChatContainerProps) {
           isUser={message.isUser}
           timestamp={message.timestamp}
           isTyping={message.isTyping}
+          suggestions={message.suggestions}
         />
       ))}
     </div>

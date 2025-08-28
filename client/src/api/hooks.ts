@@ -90,3 +90,13 @@ export function useCreateReflection() {
     }
   });
 }
+
+// New hook for AI suggestions
+export function useSuggestions() {
+  return useMutation({
+    mutationFn: async ({ problem, category }: { problem: string; category: 'emotional' | 'mental' | 'physical' }) => {
+      const response = await api.post('/reflections/suggestions', { problem, category });
+      return response.data;
+    },
+  });
+}
