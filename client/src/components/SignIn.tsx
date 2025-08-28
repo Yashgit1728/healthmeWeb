@@ -66,7 +66,9 @@ export function SignIn() {
         setErrors(fieldErrors);
       } else if (error instanceof Error) {
         setErrors({
-          form: error.message
+          form: error.message.includes('Backend server is not available') 
+            ? 'The server is currently unavailable. Please try again later or contact support.'
+            : error.message
         });
       } else {
         setErrors({
@@ -88,6 +90,23 @@ export function SignIn() {
         <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg w-full max-w-md">
           <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Sign In</h2>
           
+          {/* Backend Status Warning */}
+          <div className="p-4 mb-6 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg">
+            <div className="flex items-start">
+              <div className="flex-shrink-0">
+                <span className="text-yellow-600 dark:text-yellow-400 text-xl">⚠️</span>
+              </div>
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-yellow-800 dark:text-yellow-200">
+                  Backend Server Required
+                </h3>
+                <p className="mt-1 text-sm text-yellow-700 dark:text-yellow-300">
+                  This app requires a backend server to be running. The frontend is deployed, but you need to deploy the server separately to a service like Railway, Render, or Heroku.
+                </p>
+              </div>
+            </div>
+          </div>
+
           {showSuccess && (
             <div className="p-3 mb-4 bg-green-100 text-green-700 rounded-lg text-sm">
               Account created successfully. Please sign in.
