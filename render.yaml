@@ -4,7 +4,7 @@ services:
     env: node
     plan: free
     rootDir: server
-    buildCommand: npm ci --include=dev && npm run build && ls -la && ls -la dist
+    buildCommand: npm ci --include=dev && npm run build && echo "--- ls dist ---" && ls -la dist
     startCommand: npm run start
     envVars:
       - key: NODE_ENV
