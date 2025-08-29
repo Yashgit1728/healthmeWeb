@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000', // Base URL without /api prefix since we removed it from server
+  baseURL: import.meta.env.PROD ? 'https://your-backend-domain.com' : 'http://localhost:3000',
   withCredentials: true, // This enables sending/receiving cookies
   headers: {
     'Content-Type': 'application/json'

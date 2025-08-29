@@ -51,7 +51,7 @@ const aiLimiter = rateLimit({
 // Middleware
 app.use(cors({ 
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://yourdomain.com'] // Update with your production domain
+    ? [process.env.FRONTEND_URL || 'https://your-frontend-domain.com']
     : ['http://localhost:5173', 'http://localhost:3000'],
   credentials: true
 }));

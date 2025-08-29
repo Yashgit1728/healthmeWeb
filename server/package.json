@@ -9,7 +9,8 @@
     "dev": "ts-node -r dotenv/config src/index.ts",
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
-    "prestart": "npm run build"
+    "prestart": "npm run build",
+    "postinstall": "npm run build"
   },
   "keywords": [],
   "author": "",
