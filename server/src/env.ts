@@ -50,10 +50,10 @@ function must(name: string) {
 }
 
 export const ENV = {
-  NODE_ENV: process.env.NODE_ENV ?? 'development',
-  PORT: process.env.PORT ?? '3000',
-  GOOGLE_API_KEY: process.env.GOOGLE_API_KEY ?? '',
-  JWT_SECRET: process.env.JWT_SECRET ?? ''
+  GOOGLE_API_KEY: must("GOOGLE_API_KEY"),
+  PORT: process.env.PORT || "3000",
+  JWT_SECRET: must("JWT_SECRET"),
+  NODE_ENV: process.env.NODE_ENV || "development"
 };
 
 // Debug log during startup (remove in production)

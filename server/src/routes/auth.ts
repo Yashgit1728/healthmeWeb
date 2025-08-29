@@ -61,12 +61,9 @@ router.post('/register', async (req, res) => {
       sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     }).json({
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name
-      },
-      token: token
+      id: user.id,
+      email: user.email,
+      name: user.name
     });
   } catch (error) {
     console.error('Registration error:', error);
@@ -115,12 +112,9 @@ router.post('/login', async (req, res) => {
       sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     }).json({
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name
-      },
-      token: token
+      id: user.id,
+      email: user.email,
+      name: user.name
     });
   } catch (error) {
     console.error('Login error:', error);

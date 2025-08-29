@@ -44,15 +44,14 @@ export function Header({ isDark, onThemeToggle }: HeaderProps) {
         </Link>
 
         <div className="flex items-center space-x-4">
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <NavLink to="/">
-              Journal
-            </NavLink>
-            <NavLink to="/progress">
-              Progress
-            </NavLink>
-          </nav>
+          {/* Navigation Links - Only show when user is logged in */}
+          {user && (
+            <nav className="hidden md:flex items-center space-x-2">
+              <NavLink to="/">Journal</NavLink>
+              <NavLink to="/progress">Progress</NavLink>
+              <NavLink to="/about">About Me</NavLink>
+            </nav>
+          )}
 
           {/* Theme Toggle */}
           <button
@@ -104,18 +103,15 @@ export function Header({ isDark, onThemeToggle }: HeaderProps) {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Navigation - Only show when user is logged in */}
       {user && (
-        <div className="md:hidden border-t border-gray-200 dark:border-gray-700">
-          <nav className="flex justify-around py-3">
-            <NavLink to="/">
-              Journal
-            </NavLink>
-            <NavLink to="/progress">
-              Progress
-            </NavLink>
-          </nav>
-        </div>
+        <nav className="md:hidden border-t border-gray-200 dark:border-gray-800">
+          <div className="flex justify-around p-2">
+            <NavLink to="/">Journal</NavLink>
+            <NavLink to="/progress">Progress</NavLink>
+            <NavLink to="/about">About Me</NavLink>
+          </div>
+        </nav>
       )}
     </header>
   );

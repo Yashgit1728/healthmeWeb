@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "Mental Wellness Journal with AI-powered reflections",
   "scripts": {
-    "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev\"",
-    "build": "cd server && npm run build && cd ../client && npm run build",
-    "start": "cd server && npm run start",
+    "start": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev\"",
     "install-all": "npm install && cd client && npm install && cd ../server && npm install"
   },
   "keywords": [],

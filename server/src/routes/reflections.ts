@@ -1,8 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
-import { getOptimizedReply, getAISuggestions } from '../gemini-optimized';
+import { getOptimizedReply } from '../gemini-optimized';
 import db from '../db';
-import { userRateLimit } from '../middleware/optimization';
 
 const router = Router();
 
@@ -257,56 +256,6 @@ router.post('/', sanitizeInput, async (req: Request, res: Response) => {
       code: 'PROCESSING_ERROR',
       details: process.env.NODE_ENV === 'development' ? errorMessage : 'Internal error',
       retryAfter: '30 seconds'
-    });
-  }
-});
-
-// New endpoint for AI-powered suggestions and resolutions
-router.post('/suggestions', userRateLimit(10, 15 * 60 * 1000), async (req, res) => {
-  try {
-    const { problem, category = 'emotional' } = req.body;
-    
-    if (!problem || typeof problem !== 'string') {
-      return res.status(400).json({
-        error: 'Problem description is required',
-        code: 'MISSING_PROBLEM'
-      });
-    }
-    
-    if (!['emotional', 'mental', 'physical'].includes(category)) {
-      return res.status(400).json({
-        error: 'Category must be emotional, mental, or physical',
-        code: 'INVALID_CATEGORY'
-      });
-    }
-    
-    console.log('Generating suggestions for:', { problem, category });
-    
-    const startTime = Date.now();
-    const suggestions = await getAISuggestions(problem, category);
-    const processingTime = Date.now() - startTime;
-    
-    console.log('Generated AI suggestions:', {
-      suggestionsCount: suggestions.suggestions.length,
-      processingTime
-    });
-    
-    res.json({
-      success: true,
-      suggestions: suggestions.suggestions,
-      summary: suggestions.summary,
-      category,
-      processingTime
-    });
-    
-  } catch (error) {
-    console.error('Suggestions error:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-    
-    res.status(500).json({ 
-      error: 'Failed to generate suggestions', 
-      code: 'SUGGESTIONS_ERROR',
-      details: process.env.NODE_ENV === 'development' ? errorMessage : 'Internal error'
     });
   }
 });

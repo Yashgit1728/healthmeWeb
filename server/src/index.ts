@@ -51,12 +51,7 @@ const aiLimiter = rateLimit({
 // Middleware
 app.use(cors({ 
   origin: process.env.NODE_ENV === 'production' 
-    ? [
-        'https://healthmeweb.netlify.app',  // Your Netlify domain
-        'https://healthme.com',             // Your custom domain (if you have one)
-        'http://localhost:5173',            // Local development
-        'http://localhost:3000'             // Local development
-      ]
+    ? ['https://yourdomain.com'] // Update with your production domain
     : ['http://localhost:5173', 'http://localhost:3000'],
   credentials: true
 }));
@@ -183,7 +178,7 @@ app.use('*', (req: Request, res: Response) => {
   });
 });
 
-app.listen(Number(ENV.PORT), '0.0.0.0', () => {
+app.listen(Number(ENV.PORT), () => {
   console.log(`🚀 Server running on port ${ENV.PORT}`);
   console.log(`📊 Health check: http://localhost:${ENV.PORT}/health`);
   console.log(`🔍 Status: http://localhost:${ENV.PORT}/status`);
