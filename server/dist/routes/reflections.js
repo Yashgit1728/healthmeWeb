@@ -7,6 +7,7 @@ const express_1 = require("express");
 const zod_1 = require("zod");
 const gemini_optimized_1 = require("../gemini-optimized");
 const db_1 = __importDefault(require("../db"));
+const optimization_1 = require("../middleware/optimization");
 const router = (0, express_1.Router)();
 // Enhanced validation schema with better error messages
 const ReflectionSchema = zod_1.z.object({
@@ -229,6 +230,48 @@ router.post('/', sanitizeInput, async (req, res) => {
             code: 'PROCESSING_ERROR',
             details: process.env.NODE_ENV === 'development' ? errorMessage : 'Internal error',
             retryAfter: '30 seconds'
+        });
+    }
+});
+// New endpoint for AI-powered suggestions and resolutions
+router.post('/suggestions', (0, optimization_1.userRateLimit)(10, 15 * 60 * 1000), async (req, res) => {
+    try {
+        const { problem, category = 'emotional' } = req.body;
+        if (!problem || typeof problem !== 'string') {
+            return res.status(400).json({
+                error: 'Problem description is required',
+                code: 'MISSING_PROBLEM'
+            });
+        }
+        if (!['emotional', 'mental', 'physical'].includes(category)) {
+            return res.status(400).json({
+                error: 'Category must be emotional, mental, or physical',
+                code: 'INVALID_CATEGORY'
+            });
+        }
+        console.log('Generating suggestions for:', { problem, category });
+        const startTime = Date.now();
+        const suggestions = await (0, gemini_optimized_1.getAISuggestions)(problem, category);
+        const processingTime = Date.now() - startTime;
+        console.log('Generated AI suggestions:', {
+            suggestionsCount: suggestions.suggestions.length,
+            processingTime
+        });
+        res.json({
+            success: true,
+            suggestions: suggestions.suggestions,
+            summary: suggestions.summary,
+            category,
+            processingTime
+        });
+    }
+    catch (error) {
+        console.error('Suggestions error:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+        res.status(500).json({
+            error: 'Failed to generate suggestions',
+            code: 'SUGGESTIONS_ERROR',
+            details: process.env.NODE_ENV === 'development' ? errorMessage : 'Internal error'
         });
     }
 });

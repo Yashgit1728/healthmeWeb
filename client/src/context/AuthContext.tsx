@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -27,6 +27,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
+  // Check for existing token on mount
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      // Set the token in axios headers
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+  }, []);
+
   const { data: user, isLoading, error } = useQuery({
     queryKey: ['me'],
     queryFn: async () => {
@@ -35,21 +44,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return response.data;
       } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 401) {
+          // Clear invalid token
+          localStorage.removeItem('authToken');
+          delete api.defaults.headers.common['Authorization'];
           return null;
         }
         throw error;
       }
     },
     retry: false,
-    staleTime: Infinity
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false
   });
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await api.post<User>('/auth/login', { email, password });
+      const response = await api.post<{ user: User; token: string }>('/auth/login', { email, password });
+      
+      // Store token
+      localStorage.setItem('authToken', response.data.token);
+      api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
       
       // Set user data immediately
-      queryClient.setQueryData(['me'], response.data);
+      queryClient.setQueryData(['me'], response.data.user);
       
       // Small delay to let browser detect successful login and offer to save password
       await new Promise(resolve => setTimeout(resolve, 100));
@@ -94,7 +112,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch (error) {
       console.error('Logout failed:', error);
     } finally {
-      // Always clear local state
+      // Clear token and local state
+      localStorage.removeItem('authToken');
+      delete api.defaults.headers.common['Authorization'];
       queryClient.setQueryData(['me'], null);
       queryClient.clear();
       navigate('/signin');
