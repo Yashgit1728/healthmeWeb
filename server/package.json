@@ -4,13 +4,18 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/index.js",
     "dev": "ts-node -r dotenv/config src/index.ts",
+<<<<<<< Updated upstream
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
     "prestart": "npm run build",
     "postinstall": "npm run build"
+=======
+    "build": "rimraf dist && tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "db:migrate": "ts-node -r dotenv/config src/db/migrate.ts",
+    "db:seed": "ts-node -r dotenv/config src/db/seed.ts"
+>>>>>>> Stashed changes
   },
   "keywords": [],
   "author": "",
@@ -28,7 +33,10 @@
     "jsonwebtoken": "^9.0.2",
     "lowdb": "^7.0.1",
     "uuid": "^9.0.1",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "rimraf": "^5.0.10",
+    "typescript": "^5.3.3",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "@google/generative-ai": "^0.2.1",
@@ -40,8 +48,7 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.11.24",
     "@types/uuid": "^9.0.8",
-    "rimraf": "^5.0.10",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "@types/sqlite3": "^3.1.11",
+    "ts-node": "^10.9.2"
   }
 }

@@ -2311,6 +2311,87 @@
       "response": "Whoa, okay.  So you're surprised I remember that?  That's...intense.  It sounds like maybe that 'shut up' moment was pretty significant. I'm not trying to pry, but honestly, what was going on there?",
       "id": "f1733f99-bafc-4eeb-8618-a9f79a265440",
       "createdAt": "2025-08-28T22:52:40.484Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "I am happy",
+      "mood": 5,
+      "tags": [],
+      "response": "That's awesome to hear!  Seriously, so glad you're feeling happy.  What's brought on this good mood?",
+      "id": "b9fa216d-a70e-415c-a89e-4453444542fd",
+      "createdAt": "2025-08-29T03:33:30.923Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "u don't know?",
+      "mood": 5,
+      "tags": [],
+      "response": "Hey, I get it.  Sometimes it feels like I'm missing something, even though I'm trying my best to understand.  It's frustrating, right?  What's making you feel like I *don't* know?",
+      "id": "de176dc5-6831-476f-9273-6c8420ec3332",
+      "createdAt": "2025-08-29T03:33:39.212Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "mnknzdkc",
+      "mood": 5,
+      "tags": [],
+      "response": "Okay, so 'mnknzdkc'… I'm guessing that's not exactly a resounding 'yes I feel amazing!'  That's totally alright.  Sometimes words just fail us, right?  It sounds like you might still be working through things. ",
+      "id": "adea6d1f-3bec-4b84-807a-969249199cfa",
+      "createdAt": "2025-08-29T03:34:00.913Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "nascnkcsm",
+      "mood": 5,
+      "tags": [],
+      "response": "Okay, so 'nascnkcsm'… I'm guessing that's not a word, haha.  It sounds like you're maybe too tired to even type properly?  That's totally understandable.  Seriously,  don't worry about trying to explain it perfectly right now.  Just focus on taking care of yourself.",
+      "id": "14a6f6da-a913-46d3-9142-742cce4ed50a",
+      "createdAt": "2025-08-29T03:46:45.200Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "okay",
+      "mood": 5,
+      "tags": [],
+      "response": "Okay, cool.  So, 'okay' - that's a pretty neutral response.  Is there anything specific that's making you happy, or is it just a general feeling of contentment?",
+      "id": "745c2e01-46dd-42ce-b15c-a8cf66b13517",
+      "createdAt": "2025-08-29T03:46:56.168Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "feeling of contentment",
+      "mood": 5,
+      "tags": [],
+      "response": "Oh, awesome!  A feeling of contentment is definitely a good place to be.  So, that 'shut up' thing earlier – was that related to feeling misunderstood, or something else entirely?",
+      "id": "d289f382-a695-4527-a689-6fbe3ea450b6",
+      "createdAt": "2025-08-29T03:47:14.737Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "i am feeling gloomy",
+      "mood": 5,
+      "tags": [],
+      "response": "Oh man, I'm so sorry to hear that.  Feeling gloomy really sucks.  It sounds like something's weighing on you. That's okay, though – it’s perfectly fine to not be okay sometimes.",
+      "id": "8339e946-4a7e-417f-8966-ffed70cab408",
+      "createdAt": "2025-08-29T03:47:34.885Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "thank you for your kind words but i need solution",
+      "mood": 5,
+      "tags": [],
+      "response": "Yeah, I hear you.  'Thank you, but I need a solution' – that's totally fair.  It's frustrating when you're feeling stuck and just want things to be better.  It sounds like you're looking for some kind of practical help right now, not just someone to listen.  That's okay, I get it.",
+      "id": "cc4df546-37ec-4af8-bd36-6d95471ae0e2",
+      "createdAt": "2025-08-29T03:47:56.226Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "anyways u r not sharing right",
+      "mood": 5,
+      "tags": [],
+      "response": "Okay, I hear you.  'Anyways u r not sharing right' –  man, that sounds frustrating.  It feels like you're holding back, and that's totally understandable if you're not ready to talk about it.  It's okay to not be okay, you know?",
+      "id": "a19f44b7-ad14-4c32-b231-fff5a9b8a62a",
+      "createdAt": "2025-08-29T03:48:50.617Z"
     }
   ],
   "users": [
@@ -3491,6 +3572,69 @@
       "text": "ohh you still remember that shut up, how is it posible",
       "isUser": true,
       "createdAt": "2025-08-28T22:52:40.424Z"
+    },
+    {
+      "id": "a37e01f3-df9d-4b77-aac1-e5d1c64e5dcb",
+      "userId": "t9llwo0t5",
+      "text": "I am happy",
+      "isUser": true,
+      "createdAt": "2025-08-29T03:33:30.864Z"
+    },
+    {
+      "id": "eac1ca33-6254-4013-8d28-46b49f1c26cd",
+      "userId": "t9llwo0t5",
+      "text": "Hey, I get it.  Sometimes it feels like I'm missing something, even though I'm trying my best to understand.  It's frustrating, right?  What's making you feel like I *don't* know?",
+      "isUser": false,
+      "createdAt": "2025-08-29T03:33:39.175Z"
+    },
+    {
+      "id": "698cc1f8-11ae-4ed5-bf38-dd595ff40a14",
+      "userId": "t9llwo0t5",
+      "text": "Okay, so 'mnknzdkc'… I'm guessing that's not exactly a resounding 'yes I feel amazing!'  That's totally alright.  Sometimes words just fail us, right?  It sounds like you might still be working through things. ",
+      "isUser": false,
+      "createdAt": "2025-08-29T03:34:00.880Z"
+    },
+    {
+      "id": "412195f4-2bb6-4fad-a37f-093857c37d09",
+      "userId": "t9llwo0t5",
+      "text": "Okay, so 'nascnkcsm'… I'm guessing that's not a word, haha.  It sounds like you're maybe too tired to even type properly?  That's totally understandable.  Seriously,  don't worry about trying to explain it perfectly right now.  Just focus on taking care of yourself.",
+      "isUser": false,
+      "createdAt": "2025-08-29T03:46:45.155Z"
+    },
+    {
+      "id": "e6ddce49-e0d3-4c91-9868-f2058d76c7d3",
+      "userId": "t9llwo0t5",
+      "text": "Okay, cool.  So, 'okay' - that's a pretty neutral response.  Is there anything specific that's making you happy, or is it just a general feeling of contentment?",
+      "isUser": false,
+      "createdAt": "2025-08-29T03:46:56.110Z"
+    },
+    {
+      "id": "70be7fb8-9387-44a2-a4c8-190f9620eb5a",
+      "userId": "t9llwo0t5",
+      "text": "Oh, awesome!  A feeling of contentment is definitely a good place to be.  So, that 'shut up' thing earlier – was that related to feeling misunderstood, or something else entirely?",
+      "isUser": false,
+      "createdAt": "2025-08-29T03:47:14.688Z"
+    },
+    {
+      "id": "7b6792e6-5d96-4aa5-90f4-8df1ba216994",
+      "userId": "t9llwo0t5",
+      "text": "Oh man, I'm so sorry to hear that.  Feeling gloomy really sucks.  It sounds like something's weighing on you. That's okay, though – it’s perfectly fine to not be okay sometimes.",
+      "isUser": false,
+      "createdAt": "2025-08-29T03:47:34.838Z"
+    },
+    {
+      "id": "2d3913b1-5828-4fd8-a62a-f1796f9beac7",
+      "userId": "t9llwo0t5",
+      "text": "Yeah, I hear you.  'Thank you, but I need a solution' – that's totally fair.  It's frustrating when you're feeling stuck and just want things to be better.  It sounds like you're looking for some kind of practical help right now, not just someone to listen.  That's okay, I get it.",
+      "isUser": false,
+      "createdAt": "2025-08-29T03:47:56.199Z"
+    },
+    {
+      "id": "c8b2891e-3861-48b6-9b8b-20a6cc1f1ac6",
+      "userId": "t9llwo0t5",
+      "text": "Okay, I hear you.  'Anyways u r not sharing right' –  man, that sounds frustrating.  It feels like you're holding back, and that's totally understandable if you're not ready to talk about it.  It's okay to not be okay, you know?",
+      "isUser": false,
+      "createdAt": "2025-08-29T03:48:50.569Z"
     }
   ]
 }
