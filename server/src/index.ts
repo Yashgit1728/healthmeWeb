@@ -158,6 +158,10 @@ app.get('/test-gemini', aiLimiter, async (_req: Request, res: Response) => {
 app.use('/auth', authRouter);
 app.use('/reflections', authMiddleware, reflectionsRouter);
 app.use('/stats', authMiddleware, statsRouter);
+// server/src/index.ts
+app.head('/', (_req, res) => res.sendStatus(200));        // quiet probes
+app.get('/', (_req, res) => res.redirect('/health'));     // or send JSON
+// app.get('/', (_req, res) => res.json({ ok: true, tip: 'See /health' }));
 
 // 404 handler
 app.use('*', (req: Request, res: Response) => {
