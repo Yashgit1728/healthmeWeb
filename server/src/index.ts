@@ -11,6 +11,7 @@ import reflectionsRouter from './routes/reflections';
 import statsRouter from './routes/stats';
 import authRouter from './routes/auth';
 import { authMiddleware } from './middleware/auth';
+import db from './db';
 
 const app = express();
 
@@ -158,6 +159,30 @@ app.get('/test-gemini', aiLimiter, async (_req: Request, res: Response) => {
 app.use('/auth', authRouter);
 app.use('/reflections', authMiddleware, reflectionsRouter);
 app.use('/stats', authMiddleware, statsRouter);
+
+// Direct /me endpoint (same as /auth/me)
+app.get('/me', authMiddleware, async (req: Request, res: Response) => {
+  if (!req.user) {
+    return res.status(401).json({ error: 'Not authenticated' });
+  }
+
+  try {
+    const user = await db.getUserById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({
+      id: user.id,
+      email: user.email,
+      name: user.name
+    });
+  } catch (error) {
+    console.error('Profile fetch error:', error);
+    res.status(500).json({ error: 'Failed to fetch profile' });
+  }
+});
+
 // server/src/index.ts
 app.head('/', (_req, res) => res.sendStatus(200));        // quiet probes
 app.get('/', (_req, res) => res.redirect('/health'));     // or send JSON
@@ -175,6 +200,8 @@ app.use('*', (req: Request, res: Response) => {
       'GET /test-gemini',
       'POST /auth/login',
       'POST /auth/register',
+      'GET /me',
+      'GET /auth/me',
       'GET /reflections',
       'POST /reflections',
       'GET /stats'
