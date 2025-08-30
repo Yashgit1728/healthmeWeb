@@ -46,7 +46,7 @@ export function Header({ isDark, onThemeToggle }: HeaderProps) {
         <div className="flex items-center space-x-4">
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <NavLink to="/">
+            <NavLink to="/app">
               Journal
             </NavLink>
             <NavLink to="/progress">
@@ -108,7 +108,7 @@ export function Header({ isDark, onThemeToggle }: HeaderProps) {
       {user && (
         <div className="md:hidden border-t border-gray-200 dark:border-gray-700">
           <nav className="flex justify-around py-3">
-            <NavLink to="/">
+            <NavLink to="/app">
               Journal
             </NavLink>
             <NavLink to="/progress">

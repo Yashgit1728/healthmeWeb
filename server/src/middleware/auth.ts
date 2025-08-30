@@ -14,7 +14,16 @@ declare global {
 }
 
 export function authMiddleware(req: Request, res: Response, next: NextFunction) {
-  const token = req.cookies.token;
+  // Check for token in cookies first (HTTP-only cookies)
+  let token = req.cookies.token;
+  
+  // If no cookie token, check Authorization header (for localStorage tokens)
+  if (!token) {
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      token = authHeader.substring(7); // Remove 'Bearer ' prefix
+    }
+  }
 
   if (!token) {
     return res.status(401).json({ error: 'No token provided' });

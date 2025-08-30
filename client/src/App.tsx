@@ -6,6 +6,7 @@ import { SignUp } from './components/SignUp';
 import { JournalApp } from './components/JournalApp';
 import { Progress } from './components/Progress';
 import { AboutMe } from './components/AboutMe';
+import { LandingPage } from './components/LandingPage';
 
 // Configure query client with better error handling and caching
 const queryClient = new QueryClient({
@@ -36,11 +37,12 @@ export default function App() {
         <AuthProvider>
           <Routes>
             {/* Public routes */}
+            <Route path="/" element={<LandingPage />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
 
             {/* Protected routes */}
-            <Route path="/" element={
+            <Route path="/app" element={
               <ProtectedRoute>
                 <JournalApp />
               </ProtectedRoute>

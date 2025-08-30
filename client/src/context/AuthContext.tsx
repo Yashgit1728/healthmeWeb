@@ -72,8 +72,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Small delay to let browser detect successful login and offer to save password
       await new Promise(resolve => setTimeout(resolve, 100));
       
-      // Navigate to home
-      navigate('/');
+      // Navigate to app
+      navigate('/app');
     } catch (error) {
       if (axios.isAxiosError(error)) {
         throw new Error(error.response?.data?.error || 'Failed to sign in');
@@ -90,10 +90,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Small delay to let browser detect successful form submission
       await new Promise(resolve => setTimeout(resolve, 100));
       
-      // If registration returns user data (auto-login), set it and go to home
+      // If registration returns user data (auto-login), set it and go to app
       if (response.data && response.data.id) {
         queryClient.setQueryData(['me'], response.data);
-        navigate('/');
+        navigate('/app');
       } else {
         // Otherwise go to sign in with success message
         navigate('/signin', { state: { registered: true } });

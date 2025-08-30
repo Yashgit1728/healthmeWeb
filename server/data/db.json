@@ -2410,6 +2410,24 @@
       "response": "Okay, so... that's... a response.  I'm guessing you're not feeling super clear about what's making you content right now, huh? That's totally understandable – sometimes those feelings are hard to pinpoint.  It's okay if it's a bit jumbled.",
       "id": "99d28a11-37bf-4ab9-91b6-0b0e72c85a07",
       "createdAt": "2025-08-30T18:29:31.417Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "I am crying",
+      "mood": 5,
+      "tags": [],
+      "response": "Oh my gosh, I'm so sorry.  I didn't mean to upset you.  It sounds like whatever was behind that 'shut up' was way bigger than I realized.  It's okay to cry, honestly. Let it out.",
+      "id": "0096bebd-b01e-4d80-81b0-96bd4399b9d2",
+      "createdAt": "2025-08-30T20:33:52.212Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "okay bye",
+      "mood": 5,
+      "tags": [],
+      "response": "Okay, bye!  Hope you feel better soon.  Seriously, take care of yourself.",
+      "id": "0a1d17e7-34d4-47aa-9822-2585b799a361",
+      "createdAt": "2025-08-30T20:34:07.532Z"
     }
   ],
   "users": [
@@ -2419,6 +2437,12 @@
       "passwordHash": "$2b$10$.KjeNIB5xISu8ojI96WBd.8SsSxxe2KtXk0M3ka.ViO0MBrGF9Fsi",
       "id": "t9llwo0t5",
       "createdAt": "2025-08-21T06:23:56.862Z"
+    },
+    {
+      "email": "test@example.com",
+      "name": "Test User",
+      "passwordHash": "$2a$10$/ZEpbPx3G2JALx0gc5gZtOR.4g1FbKi4mCz8dBGCs0f5UolzGyHSm",
+      "id": "00883684-b3d4-4eaa-80f9-034be3e1e73f"
     }
   ],
   "messages": [
@@ -3667,6 +3691,20 @@
       "text": "n sdvkjdjnldf",
       "isUser": true,
       "createdAt": "2025-08-30T18:29:31.351Z"
+    },
+    {
+      "id": "806098b9-0507-4dc5-9fc0-722f1f8ff7eb",
+      "userId": "t9llwo0t5",
+      "text": "I am crying",
+      "isUser": true,
+      "createdAt": "2025-08-30T20:33:52.178Z"
+    },
+    {
+      "id": "35b10fa4-f586-4bbc-985f-3536a77e239c",
+      "userId": "t9llwo0t5",
+      "text": "Okay, bye!  Hope you feel better soon.  Seriously, take care of yourself.",
+      "isUser": false,
+      "createdAt": "2025-08-30T20:34:07.498Z"
     }
   ]
 }

@@ -52,7 +52,7 @@ const aiLimiter = rateLimit({
 app.use(cors({ 
   origin: process.env.NODE_ENV === 'production' 
     ? [process.env.FRONTEND_URL || 'https://your-frontend-domain.com']
-    : ['http://localhost:5173', 'http://localhost:3000'],
+    : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'],
   credentials: true
 }));
 app.use(express.json({ limit: '10mb' })); // Limit request body size
