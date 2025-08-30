@@ -1,6 +1,6 @@
 [build]
   base = "client"
-  command = "npm ci && npm run build"
+  command = "npm install --no-audit --no-fund --legacy-peer-deps && npm run build"
   publish = "dist"
 
 # Proxy API to Render (MUST be ABOVE SPA fallback)
@@ -17,4 +17,3 @@
 
 [build.environment]
   NODE_VERSION = "20"
-  NPM_FLAGS = "--legacy-peer-deps"
