@@ -5,17 +5,14 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "ts-node -r dotenv/config src/index.ts",
-<<<<<<< Updated upstream
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
     "prestart": "npm run build",
-    "postinstall": "npm run build"
-=======
+    "postinstall": "npm run build",
     "build": "rimraf dist && tsc -p tsconfig.json",
     "start": "node dist/index.js",
     "db:migrate": "ts-node -r dotenv/config src/db/migrate.ts",
     "db:seed": "ts-node -r dotenv/config src/db/seed.ts"
->>>>>>> Stashed changes
   },
   "keywords": [],
   "author": "",

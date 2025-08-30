@@ -2392,6 +2392,24 @@
       "response": "Okay, I hear you.  'Anyways u r not sharing right' –  man, that sounds frustrating.  It feels like you're holding back, and that's totally understandable if you're not ready to talk about it.  It's okay to not be okay, you know?",
       "id": "a19f44b7-ad14-4c32-b231-fff5a9b8a62a",
       "createdAt": "2025-08-29T03:48:50.617Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "I am sleepy",
+      "mood": 5,
+      "tags": [],
+      "response": "Yeah, I get that.  Being sleepy is a pretty good reason for typing gibberish!  Honestly,  it sounds like you need some rest.  That's way more important than explaining anything right now.",
+      "id": "7f96b6fc-6636-41f3-8592-dada03bcfa08",
+      "createdAt": "2025-08-30T18:29:13.318Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "n sdvkjdjnldf",
+      "mood": 5,
+      "tags": [],
+      "response": "Okay, so... that's... a response.  I'm guessing you're not feeling super clear about what's making you content right now, huh? That's totally understandable – sometimes those feelings are hard to pinpoint.  It's okay if it's a bit jumbled.",
+      "id": "99d28a11-37bf-4ab9-91b6-0b0e72c85a07",
+      "createdAt": "2025-08-30T18:29:31.417Z"
     }
   ],
   "users": [
@@ -3635,6 +3653,20 @@
       "text": "Okay, I hear you.  'Anyways u r not sharing right' –  man, that sounds frustrating.  It feels like you're holding back, and that's totally understandable if you're not ready to talk about it.  It's okay to not be okay, you know?",
       "isUser": false,
       "createdAt": "2025-08-29T03:48:50.569Z"
+    },
+    {
+      "id": "1d1d6487-095e-455e-965d-aab8a67cd5bf",
+      "userId": "t9llwo0t5",
+      "text": "Yeah, I get that.  Being sleepy is a pretty good reason for typing gibberish!  Honestly,  it sounds like you need some rest.  That's way more important than explaining anything right now.",
+      "isUser": false,
+      "createdAt": "2025-08-30T18:29:13.243Z"
+    },
+    {
+      "id": "e113b093-2c5e-4fff-bf60-e203b2cd2d37",
+      "userId": "t9llwo0t5",
+      "text": "n sdvkjdjnldf",
+      "isUser": true,
+      "createdAt": "2025-08-30T18:29:31.351Z"
     }
   ]
 }
