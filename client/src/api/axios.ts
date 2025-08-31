@@ -8,6 +8,20 @@ const api = axios.create({
   }
 });
 
+// Add request interceptor to include auth token
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 // Add response interceptor for better error handling
 api.interceptors.response.use(
   response => response,
@@ -15,6 +29,7 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       // Clear any stored auth state on 401
       console.log('Unauthorized - clearing auth state');
+      localStorage.removeItem('authToken');
       // You might want to trigger a logout here or redirect
     }
     return Promise.reject(error);

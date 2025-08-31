@@ -7,6 +7,11 @@ import db from '../db';
 const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret';
 
+// Validate JWT secret
+if (!process.env.JWT_SECRET) {
+  console.warn('⚠️  JWT_SECRET not set, using default secret. This is not secure for production!');
+}
+
 const UserSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
@@ -33,8 +38,11 @@ router.post('/register', async (req, res) => {
   try {
     const { email, password, name } = parsed.data;
     
+    console.log(`Attempting to register user: ${email}`);
+    
     const existingUser = await db.getUserByEmail(email);
     if (existingUser) {
+      console.log(`Registration failed: Email ${email} already registered`);
       return res.status(400).json({ error: 'Email already registered' });
     }
 
@@ -44,6 +52,8 @@ router.post('/register', async (req, res) => {
       name,
       passwordHash: hash
     });
+
+    console.log(`User registered successfully: ${user.email}`);
 
     // Include both id (as sub) and email in JWT
     const token = jwt.sign(
@@ -55,6 +65,7 @@ router.post('/register', async (req, res) => {
       { expiresIn: '7d' }
     );
 
+    // Set both cookie and return token for localStorage
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -89,15 +100,21 @@ router.post('/login', async (req, res) => {
   try {
     const { email, password } = parsed.data;
     
+    console.log(`Attempting login for user: ${email}`);
+    
     const user = await db.getUserByEmail(email);
     if (!user) {
+      console.log(`Login failed: User ${email} not found`);
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
     const isValid = await bcrypt.compare(password, user.passwordHash);
     if (!isValid) {
+      console.log(`Login failed: Invalid password for user ${email}`);
       return res.status(401).json({ error: 'Invalid credentials' });
     }
+
+    console.log(`User logged in successfully: ${user.email}`);
 
     // Include both id (as sub) and email in JWT
     const token = jwt.sign(
@@ -109,6 +126,7 @@ router.post('/login', async (req, res) => {
       { expiresIn: '7d' }
     );
 
+    // Set both cookie and return token for localStorage
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',

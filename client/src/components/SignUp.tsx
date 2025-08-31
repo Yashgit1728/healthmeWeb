@@ -29,7 +29,7 @@ export function SignUp() {
   // Redirect if already logged in
   useEffect(() => {
     if (user) {
-      navigate('/');
+      navigate('/app');
     }
   }, [user, navigate]);
 
@@ -45,7 +45,7 @@ export function SignUp() {
       await register(validData.name, validData.email, validData.password);
       
       // If we get here, registration was successful
-      console.log('Registration successful - browser should offer to save password');
+      console.log('Registration successful');
       
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -58,9 +58,17 @@ export function SignUp() {
         });
         setErrors(fieldErrors);
       } else if (error instanceof Error) {
-        setErrors({
-          form: error.message
-        });
+        // Handle server errors properly
+        const errorMessage = error.message;
+        if (errorMessage.includes('already registered') || errorMessage.includes('Email already registered')) {
+          setErrors({
+            email: 'This email is already registered. Please use a different email or sign in instead.'
+          });
+        } else {
+          setErrors({
+            form: errorMessage
+          });
+        }
       } else {
         setErrors({
           form: 'An unexpected error occurred'

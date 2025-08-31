@@ -40,6 +40,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     queryKey: ['me'],
     queryFn: async () => {
       try {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+          return null;
+        }
+        
         const response = await api.get<User>('/auth/me');
         return response.data;
       } catch (error) {
@@ -55,7 +60,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     retry: false,
     staleTime: Infinity,
     refetchOnWindowFocus: false,
-    refetchOnMount: false
+    refetchOnMount: true, // Changed to true to refetch on mount
+    enabled: !!localStorage.getItem('authToken'), // Only run if we have a token
+    onError: (error) => {
+      console.error('Auth query error:', error);
+      // Clear invalid token on any error
+      localStorage.removeItem('authToken');
+      delete api.defaults.headers.common['Authorization'];
+    }
   });
 
   const login = async (email: string, password: string) => {
@@ -68,9 +80,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       
       // Set user data immediately
       queryClient.setQueryData(['me'], response.data.user);
-      
-      // Small delay to let browser detect successful login and offer to save password
-      await new Promise(resolve => setTimeout(resolve, 100));
       
       // Navigate to app
       navigate('/app');
@@ -85,19 +94,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const register = async (name: string, email: string, password: string) => {
     try {
       // Register the user
-      const response = await api.post('/auth/register', { name, email, password });
+      const response = await api.post<{ user: User; token: string }>('/auth/register', { name, email, password });
       
-      // Small delay to let browser detect successful form submission
-      await new Promise(resolve => setTimeout(resolve, 100));
+      // Store token and user data
+      localStorage.setItem('authToken', response.data.token);
+      api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+      queryClient.setQueryData(['me'], response.data.user);
       
-      // If registration returns user data (auto-login), set it and go to app
-      if (response.data && response.data.id) {
-        queryClient.setQueryData(['me'], response.data);
-        navigate('/app');
-      } else {
-        // Otherwise go to sign in with success message
-        navigate('/signin', { state: { registered: true } });
-      }
+      // Navigate to app
+      navigate('/app');
     } catch (error) {
       if (axios.isAxiosError(error)) {
         throw new Error(error.response?.data?.error || 'Failed to register');

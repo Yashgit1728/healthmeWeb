@@ -2428,6 +2428,78 @@
       "response": "Okay, bye!  Hope you feel better soon.  Seriously, take care of yourself.",
       "id": "0a1d17e7-34d4-47aa-9822-2585b799a361",
       "createdAt": "2025-08-30T20:34:07.532Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "My friend feeling feverish",
+      "mood": 5,
+      "tags": [],
+      "response": "Oh no, that sucks!  A fever is never fun.  Is your friend resting okay?  Honestly, I'd just focus on making sure they're comfortable right now – plenty of fluids, maybe some soup?",
+      "id": "fc8b7b2a-64fc-4e03-be58-9bd881dee2b7",
+      "createdAt": "2025-08-31T05:00:05.232Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "headache?",
+      "mood": 5,
+      "tags": [],
+      "response": "Headache, huh?  Man, that sucks.  Sounds like you're really not feeling well.  I'm sorry you're going through this.",
+      "id": "fc80762e-2975-4dab-8434-4a72101bbfdf",
+      "createdAt": "2025-08-31T05:00:39.636Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "why are you always saying \"oh! sucks\"?",
+      "mood": 5,
+      "tags": [],
+      "response": "Oh, hey, I'm sorry you feel that way!  I didn't mean to make you feel like I was being dismissive.  I guess I sometimes use that phrase without thinking, and it probably doesn't come across well. I really just want to be supportive.",
+      "id": "9f3b5afc-a826-42ed-960c-1d88a466cb58",
+      "createdAt": "2025-08-31T05:04:44.846Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "do you have brain to think?",
+      "mood": 5,
+      "tags": [],
+      "response": "Whoa, hey.  That's kind of a harsh question, and I get it if you're feeling really down right now.  It sounds like things are rough.  I'm here for you, even if you just want to vent or need a distraction.",
+      "id": "a92e20fa-a018-4b2e-9d66-82175f0802f4",
+      "createdAt": "2025-08-31T05:05:10.736Z"
+    },
+    {
+      "userId": "66961150-1b34-4427-bbdc-c4fa14581f0f",
+      "text": "happy",
+      "mood": 5,
+      "tags": [],
+      "response": "That's awesome to hear!  Seriously, so glad you're feeling happy. What's making you so happy right now?",
+      "id": "191f7101-77f9-448e-ba4c-bc3a8c3d5863",
+      "createdAt": "2025-08-31T16:38:34.969Z"
+    },
+    {
+      "userId": "66961150-1b34-4427-bbdc-c4fa14581f0f",
+      "text": "sad",
+      "mood": 5,
+      "tags": [],
+      "response": "Oh man, I'm so sorry to hear that.  'Sad' is totally valid, and it's okay to not be happy all the time.  What's bringing you down right now?",
+      "id": "c71ec162-d237-46c5-ab10-deeac60089ef",
+      "createdAt": "2025-08-31T17:05:19.337Z"
+    },
+    {
+      "userId": "66961150-1b34-4427-bbdc-c4fa14581f0f",
+      "text": "i am good how about you",
+      "mood": 5,
+      "tags": [],
+      "response": "Oh, that's good to hear!  I'm doing alright, thanks for asking.  So, you said you're good – is that a 'generally okay' kind of good, or are you actually feeling pretty great today?",
+      "id": "e78e22e4-dda7-41e7-82dd-22b0fba958d9",
+      "createdAt": "2025-08-31T17:06:48.446Z"
+    },
+    {
+      "userId": "66961150-1b34-4427-bbdc-c4fa14581f0f",
+      "text": "normal",
+      "mood": 5,
+      "tags": [],
+      "response": "Normal's cool, I guess!  But 'normal' can mean a lot of different things.  Is it a 'pretty chill and relaxed' kind of normal, or more of a 'just going through the motions' kind of normal?",
+      "id": "d3e14141-e285-4249-b06c-2929151c513f",
+      "createdAt": "2025-08-31T17:06:59.994Z"
     }
   ],
   "users": [
@@ -2443,6 +2515,12 @@
       "name": "Test User",
       "passwordHash": "$2a$10$/ZEpbPx3G2JALx0gc5gZtOR.4g1FbKi4mCz8dBGCs0f5UolzGyHSm",
       "id": "00883684-b3d4-4eaa-80f9-034be3e1e73f"
+    },
+    {
+      "email": "ben.tenny121@gmail.com",
+      "name": "Ben",
+      "passwordHash": "$2a$10$7Tr2pSxAE4SW6awvEg3q3eLvT4nPnq5Csu2v8Ub0R.Yf.AQMauEWa",
+      "id": "66961150-1b34-4427-bbdc-c4fa14581f0f"
     }
   ],
   "messages": [
@@ -3705,6 +3783,62 @@
       "text": "Okay, bye!  Hope you feel better soon.  Seriously, take care of yourself.",
       "isUser": false,
       "createdAt": "2025-08-30T20:34:07.498Z"
+    },
+    {
+      "id": "568adc64-fc62-4442-911f-70f3b38f6e07",
+      "userId": "t9llwo0t5",
+      "text": "My friend feeling feverish",
+      "isUser": true,
+      "createdAt": "2025-08-31T05:00:05.169Z"
+    },
+    {
+      "id": "176817a5-9a63-4818-abc2-6aaf5796a0e9",
+      "userId": "t9llwo0t5",
+      "text": "Headache, huh?  Man, that sucks.  Sounds like you're really not feeling well.  I'm sorry you're going through this.",
+      "isUser": false,
+      "createdAt": "2025-08-31T05:00:39.571Z"
+    },
+    {
+      "id": "2aebc16a-e73c-4364-8b4c-b8f07fded483",
+      "userId": "t9llwo0t5",
+      "text": "Oh, hey, I'm sorry you feel that way!  I didn't mean to make you feel like I was being dismissive.  I guess I sometimes use that phrase without thinking, and it probably doesn't come across well. I really just want to be supportive.",
+      "isUser": false,
+      "createdAt": "2025-08-31T05:04:44.814Z"
+    },
+    {
+      "id": "97208828-c8fa-42ac-a5a6-d734b51f8584",
+      "userId": "t9llwo0t5",
+      "text": "do you have brain to think?",
+      "isUser": true,
+      "createdAt": "2025-08-31T05:05:10.680Z"
+    },
+    {
+      "id": "35a50f81-8e92-471d-bef6-6e72121a8a18",
+      "userId": "66961150-1b34-4427-bbdc-c4fa14581f0f",
+      "text": "That's awesome to hear!  Seriously, so glad you're feeling happy. What's making you so happy right now?",
+      "isUser": false,
+      "createdAt": "2025-08-31T16:38:34.939Z"
+    },
+    {
+      "id": "bcb757a8-600b-4223-b0fe-e1476ad1f4ac",
+      "userId": "66961150-1b34-4427-bbdc-c4fa14581f0f",
+      "text": "Oh man, I'm so sorry to hear that.  'Sad' is totally valid, and it's okay to not be happy all the time.  What's bringing you down right now?",
+      "isUser": false,
+      "createdAt": "2025-08-31T17:05:19.308Z"
+    },
+    {
+      "id": "aec64646-3bd0-472c-b1ae-474c2763872e",
+      "userId": "66961150-1b34-4427-bbdc-c4fa14581f0f",
+      "text": "Oh, that's good to hear!  I'm doing alright, thanks for asking.  So, you said you're good – is that a 'generally okay' kind of good, or are you actually feeling pretty great today?",
+      "isUser": false,
+      "createdAt": "2025-08-31T17:06:48.403Z"
+    },
+    {
+      "id": "bc1bf460-988b-414c-9ea1-8d2deb3ef64a",
+      "userId": "66961150-1b34-4427-bbdc-c4fa14581f0f",
+      "text": "Normal's cool, I guess!  But 'normal' can mean a lot of different things.  Is it a 'pretty chill and relaxed' kind of normal, or more of a 'just going through the motions' kind of normal?",
+      "isUser": false,
+      "createdAt": "2025-08-31T17:06:59.967Z"
     }
   ]
 }

@@ -38,8 +38,11 @@ export function Header({ isDark, onThemeToggle }: HeaderProps) {
   return (
     <header className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Logo */}
-        <Link to="/" className="text-xl font-semibold text-blue-600 dark:text-blue-400">
+        {/* Logo - Navigate based on auth status */}
+        <Link 
+          to={user ? "/app" : "/"} 
+          className="text-xl font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+        >
           HealthMe
         </Link>
 
@@ -48,6 +51,9 @@ export function Header({ isDark, onThemeToggle }: HeaderProps) {
           <nav className="hidden md:flex items-center space-x-8">
             <NavLink to="/app">
               Journal
+            </NavLink>
+            <NavLink to="/prompts">
+              Prompts
             </NavLink>
             <NavLink to="/progress">
               Progress

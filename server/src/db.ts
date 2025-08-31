@@ -2,6 +2,7 @@ import { Low } from 'lowdb';
 import { JSONFile } from 'lowdb/node';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+import fs from 'fs';
 
 interface User {
   id: string;
@@ -43,38 +44,88 @@ const defaultData: DbData = {
   messages: []
 };
 
-// Initialize database
-const adapter = new JSONFile<DbData>(path.join(__dirname, '../data/db.json'));
+// Initialize database with proper path handling for production
+const getDbPath = () => {
+  if (process.env.NODE_ENV === 'production') {
+    // In production, use absolute path to ensure consistency
+    return path.join(process.cwd(), 'data', 'db.json');
+  } else {
+    // In development, use relative path from src
+    return path.join(__dirname, '../data/db.json');
+  }
+};
+
+// Ensure data directory exists
+const ensureDataDir = () => {
+  const dbPath = getDbPath();
+  const dataDir = path.dirname(dbPath);
+  
+  if (!fs.existsSync(dataDir)) {
+    try {
+      fs.mkdirSync(dataDir, { recursive: true });
+      console.log(`Created data directory: ${dataDir}`);
+    } catch (error) {
+      console.error(`Failed to create data directory: ${dataDir}`, error);
+    }
+  }
+  
+  return dbPath;
+};
+
+const dbPath = ensureDataDir();
+const adapter = new JSONFile<DbData>(dbPath);
 const db = new Low<DbData>(adapter, defaultData);
 
 // Initialize database connection
 async function initDb(): Promise<void> {
-  await db.read();
-  
-  // Ensure all required arrays exist
-  if (db.data) {
-    if (!Array.isArray(db.data.messages)) {
-      db.data.messages = [];
-    }
-    if (!Array.isArray(db.data.users)) {
-      db.data.users = [];
-    }
-    if (!Array.isArray(db.data.reflections)) {
-      db.data.reflections = [];
-    }
+  try {
+    console.log(`Initializing database at: ${dbPath}`);
     
-    // Write back if we made changes
-    await db.write();
-    console.log('Database initialized with arrays:', {
-      messages: db.data.messages.length,
-      users: db.data.users.length,
-      reflections: db.data.reflections.length
-    });
+    await db.read();
+    
+    // Ensure all required arrays exist
+    if (db.data) {
+      if (!Array.isArray(db.data.messages)) {
+        db.data.messages = [];
+      }
+      if (!Array.isArray(db.data.users)) {
+        db.data.users = [];
+      }
+      if (!Array.isArray(db.data.reflections)) {
+        db.data.reflections = [];
+      }
+      
+      // Write back if we made changes
+      await db.write();
+      console.log('Database initialized with arrays:', {
+        messages: db.data.messages.length,
+        users: db.data.users.length,
+        reflections: db.data.reflections.length
+      });
+    } else {
+      console.log('No existing data found, creating fresh database');
+      db.data = defaultData;
+      await db.write();
+    }
+  } catch (error) {
+    console.error('Database initialization error:', error);
+    // If there's an error, try to create a fresh database
+    try {
+      db.data = defaultData;
+      await db.write();
+      console.log('Created fresh database due to initialization error');
+    } catch (writeError) {
+      console.error('Failed to create fresh database:', writeError);
+      throw writeError; // Re-throw to prevent server from starting with broken DB
+    }
   }
 }
 
 // Initialize immediately
-initDb().catch(console.error);
+initDb().catch((error) => {
+  console.error('Critical: Failed to initialize database:', error);
+  process.exit(1); // Exit if we can't initialize the database
+});
 
 const dbOperations = {
   async getReflections(userId: string): Promise<Reflection[]> {
@@ -170,12 +221,24 @@ const dbOperations = {
       db.data = defaultData;
       await db.write();
     }
+    
+    // Ensure users array exists
+    if (!Array.isArray(db.data.users)) {
+      db.data.users = [];
+    }
+    
     const newUser = {
       ...user,
       id: uuidv4()
     };
+    
+    console.log('Creating user:', { email: newUser.email, name: newUser.name });
+    console.log('Current users count:', db.data.users.length);
+    
     db.data.users.push(newUser);
     await db.write();
+    
+    console.log('User created successfully, new count:', db.data.users.length);
     return newUser;
   },
 
@@ -185,7 +248,16 @@ const dbOperations = {
       db.data = defaultData;
       await db.write();
     }
-    return (db.data.users || []).find((u: User) => u.email === email);
+    
+    // Ensure users array exists
+    if (!Array.isArray(db.data.users)) {
+      db.data.users = [];
+      await db.write();
+    }
+    
+    const user = db.data.users.find((u: User) => u.email === email);
+    console.log(`Looking for user with email: ${email}, found: ${!!user}`);
+    return user;
   },
 
   async getUserById(id: string): Promise<User | undefined> {
@@ -194,7 +266,16 @@ const dbOperations = {
       db.data = defaultData;
       await db.write();
     }
-    return (db.data.users || []).find((u: User) => u.id === id);
+    
+    // Ensure users array exists
+    if (!Array.isArray(db.data.users)) {
+      db.data.users = [];
+      await db.write();
+    }
+    
+    const user = db.data.users.find((u: User) => u.id === id);
+    console.log(`Looking for user with id: ${id}, found: ${!!user}`);
+    return user;
   },
 
   async getStats(userId: string, range: '7d' | '30d'): Promise<{

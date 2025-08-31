@@ -7,6 +7,7 @@ import { JournalApp } from './components/JournalApp';
 import { Progress } from './components/Progress';
 import { AboutMe } from './components/AboutMe';
 import { LandingPage } from './components/LandingPage';
+import { DailyPrompts } from './components/DailyPrompts';
 
 // Configure query client with better error handling and caching
 const queryClient = new QueryClient({
@@ -47,6 +48,11 @@ export default function App() {
                 <JournalApp />
               </ProtectedRoute>
             } />
+            <Route path="/prompts" element={
+              <ProtectedRoute>
+                <DailyPrompts />
+              </ProtectedRoute>
+            } />
             <Route path="/about" element={
               <ProtectedRoute>
                 <AboutMe />
@@ -55,6 +61,13 @@ export default function App() {
             <Route path="/progress" element={
               <ProtectedRoute>
                 <Progress />
+              </ProtectedRoute>
+            } />
+
+            {/* Catch all route - redirect to appropriate page */}
+            <Route path="*" element={
+              <ProtectedRoute>
+                <JournalApp />
               </ProtectedRoute>
             } />
           </Routes>
