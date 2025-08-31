@@ -129,6 +129,12 @@ export async function getOptimizedReply(
       let cleanedText = text.trim();
       cleanedText = cleanedText.replace(/```json\s*/g, '').replace(/```\s*$/g, '');
       
+      // Try to extract JSON if it's wrapped in other text
+      const jsonMatch = cleanedText.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        cleanedText = jsonMatch[0];
+      }
+      
       const parsed = JSON.parse(cleanedText);
       
       // Validate and return
@@ -148,9 +154,16 @@ export async function getOptimizedReply(
       console.error('❌ Failed to parse response:', parseError);
       console.error('Raw text:', text);
       
-      // Fallback: create a simple response based on user input
-      const fallbackResponse = createFallbackResponse(userText, mood);
-      console.log('🔄 Using fallback response');
+      // Try to extract meaningful content even if JSON parsing fails
+      const meaningfulResponse = extractMeaningfulResponse(text, userText);
+      if (meaningfulResponse) {
+        console.log('🔄 Using extracted meaningful response');
+        return meaningfulResponse;
+      }
+      
+      // Last resort: create a contextual fallback response
+      const fallbackResponse = createContextualFallbackResponse(userText, mood, conversationContext);
+      console.log('🔄 Using contextual fallback response');
       return fallbackResponse;
     }
     
@@ -483,4 +496,84 @@ function createFallbackSuggestions(problem: string, category: string) {
     ],
     summary: "Remember that it's okay to take things one step at a time. You don't have to solve everything at once."
   };
+}
+
+// Extract meaningful response from AI text even if JSON parsing fails
+function extractMeaningfulResponse(aiText: string, userText: string): OptimizedAIResponse | null {
+  try {
+    // Look for patterns that suggest a message and question
+    const lines = aiText.split('\n').filter(line => line.trim().length > 0);
+    
+    if (lines.length >= 2) {
+      // Try to find a message and question
+      let message = '';
+      let question = '';
+      
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (trimmed.includes('?') && !question) {
+          question = trimmed;
+        } else if (trimmed.length > 10 && !message) {
+          message = trimmed;
+        }
+      }
+      
+      if (message && question) {
+        return {
+          message: message,
+          followUpQuestion: question
+        };
+      }
+    }
+    
+    // If we can't extract structured content, create a simple response
+    const simpleResponse = aiText.trim().substring(0, 150);
+    if (simpleResponse.length > 20) {
+      return {
+        message: simpleResponse,
+        followUpQuestion: "Can you tell me more about what's on your mind?"
+      };
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Error extracting meaningful response:', error);
+    return null;
+  }
+}
+
+// Create contextual fallback response based on conversation history
+function createContextualFallbackResponse(
+  userText: string, 
+  mood?: number, 
+  conversationContext?: Array<{ role: 'user' | 'assistant'; text: string }>
+): OptimizedAIResponse {
+  
+  // If we have conversation context, try to be more specific
+  if (conversationContext && conversationContext.length > 0) {
+    const lastUserMessage = conversationContext.filter(msg => msg.role === 'user').pop();
+    const lastAssistantMessage = conversationContext.filter(msg => msg.role === 'assistant').pop();
+    
+    // If they're answering a question, acknowledge it
+    if (lastAssistantMessage && lastAssistantMessage.text.includes('?') && 
+        (userText.toLowerCase().includes('yes') || userText.toLowerCase().includes('no') || 
+         userText.toLowerCase().includes('yeah') || userText.toLowerCase().includes('okay'))) {
+      return {
+        message: `I hear you. Your response tells me something about how you're feeling.`,
+        followUpQuestion: "Can you elaborate on that a bit more? I want to understand better."
+      };
+    }
+    
+    // If they're being vague, explore gently
+    if (userText.toLowerCase().includes('fine') || userText.toLowerCase().includes('okay') || 
+        userText.toLowerCase().includes('same') || userText.toLowerCase().includes('nothing')) {
+      return {
+        message: `Sometimes when we say things are 'fine,' we're actually feeling something else but not quite ready to talk about it.`,
+        followUpQuestion: "What's really happening with you today, even if it's just a small thing?"
+      };
+    }
+  }
+  
+  // Fall back to the basic fallback response
+  return createFallbackResponse(userText, mood);
 }

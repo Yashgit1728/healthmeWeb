@@ -2500,6 +2500,123 @@
       "response": "Normal's cool, I guess!  But 'normal' can mean a lot of different things.  Is it a 'pretty chill and relaxed' kind of normal, or more of a 'just going through the motions' kind of normal?",
       "id": "d3e14141-e285-4249-b06c-2929151c513f",
       "createdAt": "2025-08-31T17:06:59.994Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "happy",
+      "mood": 5,
+      "tags": [],
+      "response": "Happy! Awesome to hear!  Seriously, that's great news.  What's making you so happy right now?",
+      "id": "55e64add-f9c2-4b23-9821-83bdf6d03cca",
+      "createdAt": "2025-08-31T20:36:18.567Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "nothing",
+      "mood": 5,
+      "tags": [],
+      "response": "Okay, so... 'nothing'.  That's totally fine, but honestly, it feels like there's *something* going on.  You don't have to spill everything if you don't want to, but I'm here to listen if you need someone to talk to.  Even if it's just about how annoying that fly buzzing around your head is.",
+      "id": "d5351ae9-a5c1-4900-abbe-a37a3e482948",
+      "createdAt": "2025-08-31T20:36:35.072Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "I feel like sad",
+      "mood": 5,
+      "tags": [],
+      "response": "Oh man, I'm so sorry to hear that.  Feeling feverish and sad sounds absolutely miserable.  That really sucks. I'm here for you if you need anything at all, even if it's just to vent.",
+      "id": "6dfec6c4-3258-4edf-9040-ee9cfd9b85d1",
+      "createdAt": "2025-08-31T20:36:48.198Z"
+    },
+    {
+      "userId": "t9llwo0t5",
+      "text": "nk;",
+      "mood": 5,
+      "tags": [],
+      "response": "Okay, 'nk;'... I get it, that's not exactly a detailed answer, haha.  Headaches can be so debilitating, it's hard to even put it into words sometimes.  Is there anything making the headache worse, or anything that might help even a little bit?",
+      "id": "d1baf9a0-ec35-47d9-ba7f-ddf0f759471c",
+      "createdAt": "2025-08-31T20:37:02.550Z"
+    },
+    {
+      "id": "5c2d8bc3-0642-4b0f-996b-ea74450e4035",
+      "userId": "t9llwo0t5",
+      "text": "I am happy",
+      "mood": 5,
+      "tags": [],
+      "response": "",
+      "createdAt": "2025-08-31T20:55:36.902Z"
+    },
+    {
+      "id": "2668e9ee-f9f9-4611-b479-bca0668e97ec",
+      "userId": "t9llwo0t5",
+      "text": "no",
+      "mood": 5,
+      "tags": [],
+      "response": "",
+      "createdAt": "2025-08-31T20:55:44.556Z"
+    },
+    {
+      "id": "5db68bf0-3628-4978-8294-96f3241f5618",
+      "userId": "t9llwo0t5",
+      "text": "nothing",
+      "mood": 5,
+      "tags": [],
+      "response": "",
+      "createdAt": "2025-08-31T20:55:56.012Z"
+    },
+    {
+      "id": "e0f616f0-4446-4136-aa17-09431a2ee0cd",
+      "userId": "t9llwo0t5",
+      "text": "I love u",
+      "mood": 5,
+      "tags": [],
+      "response": "",
+      "createdAt": "2025-08-31T21:02:48.881Z"
+    },
+    {
+      "id": "2e37088c-df8d-4ed6-b290-2cf8c50bbeef",
+      "userId": "t9llwo0t5",
+      "text": "cmkc",
+      "mood": 5,
+      "tags": [],
+      "response": "",
+      "createdAt": "2025-08-31T21:03:01.203Z"
+    },
+    {
+      "id": "59cda8bc-896d-4765-95b5-4a642590b9fc",
+      "userId": "t9llwo0t5",
+      "text": "tell me now",
+      "mood": 5,
+      "tags": [],
+      "response": "",
+      "createdAt": "2025-08-31T21:06:26.657Z"
+    },
+    {
+      "id": "3b74d24f-37e6-45af-8d4c-477983352f5f",
+      "userId": "t9llwo0t5",
+      "text": "cnjdndnnkds",
+      "mood": 5,
+      "tags": [],
+      "response": "",
+      "createdAt": "2025-08-31T21:06:34.739Z"
+    },
+    {
+      "id": "d0afb719-1c0b-485a-8dc5-c98c88631169",
+      "userId": "t9llwo0t5",
+      "text": "I am good",
+      "mood": 5,
+      "tags": [],
+      "response": "",
+      "createdAt": "2025-08-31T21:06:42.803Z"
+    },
+    {
+      "id": "49f59994-69aa-4604-98a4-7731ef7b9f76",
+      "userId": "t9llwo0t5",
+      "text": "I am feeling great",
+      "mood": 5,
+      "tags": [],
+      "response": "",
+      "createdAt": "2025-08-31T21:12:45.417Z"
     }
   ],
   "users": [
@@ -2508,7 +2625,9 @@
       "name": "Yash",
       "passwordHash": "$2b$10$.KjeNIB5xISu8ojI96WBd.8SsSxxe2KtXk0M3ka.ViO0MBrGF9Fsi",
       "id": "t9llwo0t5",
-      "createdAt": "2025-08-21T06:23:56.862Z"
+      "createdAt": "2025-08-21T06:23:56.862Z",
+      "resetToken": "d950f4f86844e5c0f347e03dd97e0ac371d3b6652658e5856f88bde1bbb5271b",
+      "resetTokenExpiry": "2025-08-31T21:30:43.341Z"
     },
     {
       "email": "test@example.com",
@@ -2520,7 +2639,9 @@
       "email": "ben.tenny121@gmail.com",
       "name": "Ben",
       "passwordHash": "$2a$10$7Tr2pSxAE4SW6awvEg3q3eLvT4nPnq5Csu2v8Ub0R.Yf.AQMauEWa",
-      "id": "66961150-1b34-4427-bbdc-c4fa14581f0f"
+      "id": "66961150-1b34-4427-bbdc-c4fa14581f0f",
+      "resetToken": "10a6452e9d70067031b4a30635cfd1d05f1afdbf8b59790583ddc4bc9863f1e8",
+      "resetTokenExpiry": "2025-08-31T20:47:27.972Z"
     }
   ],
   "messages": [
@@ -3839,6 +3960,106 @@
       "text": "Normal's cool, I guess!  But 'normal' can mean a lot of different things.  Is it a 'pretty chill and relaxed' kind of normal, or more of a 'just going through the motions' kind of normal?",
       "isUser": false,
       "createdAt": "2025-08-31T17:06:59.967Z"
+    },
+    {
+      "id": "8c141db4-fee1-43ac-a655-25f53b53beb7",
+      "userId": "t9llwo0t5",
+      "text": "happy",
+      "isUser": true,
+      "createdAt": "2025-08-31T20:36:18.535Z"
+    },
+    {
+      "id": "35cc9ec5-ff45-4763-a3bc-bf73fff4ab41",
+      "userId": "t9llwo0t5",
+      "text": "Okay, so... 'nothing'.  That's totally fine, but honestly, it feels like there's *something* going on.  You don't have to spill everything if you don't want to, but I'm here to listen if you need someone to talk to.  Even if it's just about how annoying that fly buzzing around your head is.",
+      "isUser": false,
+      "createdAt": "2025-08-31T20:36:35.042Z"
+    },
+    {
+      "id": "032f498e-8e6c-4a9f-a882-7f31268ad74c",
+      "userId": "t9llwo0t5",
+      "text": "Oh man, I'm so sorry to hear that.  Feeling feverish and sad sounds absolutely miserable.  That really sucks. I'm here for you if you need anything at all, even if it's just to vent.",
+      "isUser": false,
+      "createdAt": "2025-08-31T20:36:48.164Z"
+    },
+    {
+      "id": "4849bf82-3779-4315-aab9-f26bbdcd7c86",
+      "userId": "t9llwo0t5",
+      "text": "Okay, 'nk;'... I get it, that's not exactly a detailed answer, haha.  Headaches can be so debilitating, it's hard to even put it into words sometimes.  Is there anything making the headache worse, or anything that might help even a little bit?",
+      "isUser": false,
+      "createdAt": "2025-08-31T20:37:02.522Z"
+    },
+    {
+      "id": "4c4f023c-0ca4-4164-b6e0-7a68ce361189",
+      "userId": "t9llwo0t5",
+      "text": "Anything specific you want to share?",
+      "isUser": false,
+      "createdAt": "2025-08-31T20:55:36.873Z",
+      "chatSessionId": "chat_1756673725649_4rmcz1kt3"
+    },
+    {
+      "id": "01babe20-ef58-4181-ac20-2dfeed082339",
+      "userId": "t9llwo0t5",
+      "text": "Is there anything at all you're looking forward to, even something small?",
+      "isUser": false,
+      "createdAt": "2025-08-31T20:55:44.531Z",
+      "chatSessionId": "chat_1756673725649_4rmcz1kt3"
+    },
+    {
+      "id": "d732a736-13cf-4518-9efb-e15aea274f1b",
+      "userId": "t9llwo0t5",
+      "text": "Is there anything at all you want to talk about, big or small?",
+      "isUser": false,
+      "createdAt": "2025-08-31T20:55:55.987Z",
+      "chatSessionId": "chat_1756673750851_7a8h04ffw"
+    },
+    {
+      "id": "897e50d3-f388-4834-a6b9-8d68ada089b7",
+      "userId": "t9llwo0t5",
+      "text": "Aww, I love you too!  Seriously, that means a lot to hear.  Makes me feel all warm and fuzzy inside. 😊",
+      "isUser": false,
+      "createdAt": "2025-08-31T21:02:48.845Z",
+      "chatSessionId": "chat_1756673926456_6tgtn4v62"
+    },
+    {
+      "id": "2214ca77-3420-47a6-ba10-cb117336cf1c",
+      "userId": "t9llwo0t5",
+      "text": "What's going on?  Spill the tea!",
+      "isUser": false,
+      "createdAt": "2025-08-31T21:03:01.177Z",
+      "chatSessionId": "chat_1756673926456_6tgtn4v62"
+    },
+    {
+      "id": "047bf93d-16b6-40b8-b519-689c122a6013",
+      "userId": "t9llwo0t5",
+      "text": "Is there anything specific you want to talk about, or should we just start from the beginning?",
+      "isUser": false,
+      "createdAt": "2025-08-31T21:06:26.592Z",
+      "chatSessionId": "chat_1756673926456_6tgtn4v62"
+    },
+    {
+      "id": "2679bf97-532f-4a67-b83b-3a1f18cda907",
+      "userId": "t9llwo0t5",
+      "text": "What's up, dude?  You seem a little... cryptic.",
+      "isUser": false,
+      "createdAt": "2025-08-31T21:06:34.703Z",
+      "chatSessionId": "chat_1756673926456_6tgtn4v62"
+    },
+    {
+      "id": "eadd67b1-4003-49a2-afb6-763bcfd31c47",
+      "userId": "t9llwo0t5",
+      "text": "Is there anything you want to chat about, or anything on your mind?",
+      "isUser": false,
+      "createdAt": "2025-08-31T21:06:42.748Z",
+      "chatSessionId": "chat_1756674396475_vpr1ngsng"
+    },
+    {
+      "id": "41789e38-e66b-4ef7-a65f-20da25d49687",
+      "userId": "t9llwo0t5",
+      "text": "That's awesome to hear!  Seriously, so glad you're feeling great. What's been making you feel so good lately?",
+      "isUser": false,
+      "createdAt": "2025-08-31T21:12:45.391Z",
+      "chatSessionId": "chat_1756674755902_e6qsd56qb"
     }
   ]
 }

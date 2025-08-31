@@ -31,9 +31,12 @@ export interface AIResponse {
 }
 
 interface ReflectionResponse {
+  success: boolean;
   reflection: Reflection;
-  ai: AIResponse;
-  stats: Stats;
+  aiResponse: {
+    message: string;
+    followUpQuestion: string;
+  };
 }
 
 export function useStats(range: '7d' | '30d') {
@@ -68,6 +71,7 @@ interface CreateReflectionData {
   text: string;
   mood: number;
   tags: string[];
+  chatSessionId?: string;
 }
 
 export function useCreateReflection() {
@@ -79,10 +83,6 @@ export function useCreateReflection() {
       return response.data;
     },
     onSuccess: (data) => {
-      // Update stats directly instead of invalidating
-      queryClient.setQueryData(['stats', '7d'], data.stats);
-      queryClient.setQueryData(['stats', '30d'], data.stats);
-      
       // Update reflections list
       queryClient.setQueryData<Reflection[]>(['reflections'], (old = []) => {
         return [...old, data.reflection];

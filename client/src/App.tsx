@@ -3,6 +3,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider, ProtectedRoute } from './context/AuthContext';
 import { SignIn } from './components/SignIn';
 import { SignUp } from './components/SignUp';
+import { ForgotPassword } from './components/ForgotPassword';
+import { ResetPassword } from './components/ResetPassword';
 import { JournalApp } from './components/JournalApp';
 import { Progress } from './components/Progress';
 import { AboutMe } from './components/AboutMe';
@@ -41,6 +43,8 @@ export default function App() {
             <Route path="/" element={<LandingPage />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
 
             {/* Protected routes */}
             <Route path="/app" element={

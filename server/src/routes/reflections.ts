@@ -18,7 +18,8 @@ const ReflectionSchema = z.object({
     .optional(),
   tags: z.array(z.string().max(50, 'Tag too long'))
     .max(10, 'Maximum 10 tags allowed')
-    .optional()
+    .optional(),
+  chatSessionId: z.string().optional() // Add chatSessionId to schema
 });
 
 // Simple in-memory cache for reflections (in production, use Redis)
@@ -134,10 +135,10 @@ router.post('/', sanitizeInput, async (req: Request, res: Response) => {
   }
 
   try {
-    const { text, mood, tags } = parsed.data;
+    const { text, mood, tags, chatSessionId } = parsed.data; // Add chatSessionId to schema
     const userId = req.user.id;
 
-    console.log(`Processing reflection for user ${userId}:`, { 
+    console.log(`Processing reflection for user ${userId} in chat session ${chatSessionId}:`, { 
       textLength: text.length, 
       mood, 
       tagsCount: tags?.length || 0 
@@ -148,15 +149,20 @@ router.post('/', sanitizeInput, async (req: Request, res: Response) => {
       .filter(key => key.startsWith(`${userId}:`));
     cacheKeys.forEach(key => reflectionsCache.delete(key));
 
-    // Get recent messages for conversation context (limit to last 6)
+    // Get recent messages for conversation context (limit to last 6) - ONLY for this specific chat session
     const startTime = Date.now();
-    const recentMessages = await db.getRecentMessages(userId, 6);
+    const recentMessages = await db.getRecentMessages(userId, 6, chatSessionId); // Pass chatSessionId
     const contextTime = Date.now() - startTime;
 
     const conversationContext = recentMessages.map(msg => ({
       role: msg.isUser ? 'user' as const : 'assistant' as const,
       text: msg.text
     }));
+
+    console.log(`Conversation context for chat ${chatSessionId}:`, {
+      messageCount: conversationContext.length,
+      contextTime
+    });
 
     // Generate AI response using optimized Gemini integration
     const aiStartTime = Date.now();
@@ -171,92 +177,69 @@ router.post('/', sanitizeInput, async (req: Request, res: Response) => {
 
     // Store the conversation messages for context (parallel operations)
     const messagePromises = [
-      db.addMessage(userId, text, true), // User message
-      db.addMessage(userId, aiResponse.message, false) // Assistant response
+      db.addMessage(userId, text, true, chatSessionId) // Pass chatSessionId
     ];
 
-    try {
-      await Promise.all(messagePromises);
-      console.log('Messages stored successfully');
-    } catch (messageError) {
-      console.error('Failed to store conversation messages:', messageError);
-      // Continue with reflection creation even if message storage fails
+    // Add AI response message
+    if (aiResponse.message) {
+      messagePromises.push(db.addMessage(userId, aiResponse.message, false, chatSessionId)); // Pass chatSessionId
     }
 
-    // Store the reflection with optimized response format
-    const reflectionStartTime = Date.now();
-    const reflection = await db.createReflection({
-      userId,
-      text,
-      mood,
-      tags,
-      response: aiResponse.message
+    // Add follow-up question if available
+    if (aiResponse.followUpQuestion) {
+      messagePromises.push(db.addMessage(userId, aiResponse.followUpQuestion, false, chatSessionId)); // Pass chatSessionId
+    }
+
+    // Execute all database operations in parallel
+    const dbStartTime = Date.now();
+    await Promise.all(messagePromises);
+    const dbTime = Date.now() - dbStartTime;
+
+    // Create reflection record
+    const reflection = await db.createReflection(userId, text, mood || 5, tags || []);
+
+    console.log(`Reflection processing completed:`, {
+      reflectionId: reflection.id,
+      totalTime: Date.now() - startTime,
+      breakdown: {
+        context: contextTime,
+        ai: aiTime,
+        database: dbTime
+      }
     });
-    const reflectionTime = Date.now() - reflectionStartTime;
 
-    console.log('Stored reflection:', {
-      id: reflection.id,
-      storageTime: reflectionTime
-    });
-
-    // Get updated stats (parallel with reflection creation)
-    const statsStartTime = Date.now();
-    const stats = await db.getStats(userId, '7d');
-    const statsTime = Date.now() - statsStartTime;
-
-    // Return the expected format for the frontend with performance metrics
-    const responseData = {
+    // Return the response
+    res.status(201).json({
+      success: true,
       reflection: {
         id: reflection.id,
-        userId: reflection.userId,
         text: reflection.text,
         mood: reflection.mood,
         tags: reflection.tags,
         createdAt: reflection.createdAt
       },
-      ai: {
-        response: aiResponse.message,
+      aiResponse: {
+        message: aiResponse.message,
         followUpQuestion: aiResponse.followUpQuestion
-      },
-      stats,
-      performance: {
-        totalTime: Date.now() - startTime,
-        aiProcessing: aiTime,
-        contextRetrieval: contextTime,
-        reflectionStorage: reflectionTime,
-        statsGeneration: statsTime
       }
-    };
-
-    console.log('Response generated successfully:', {
-      totalTime: responseData.performance.totalTime,
-      aiTime,
-      contextTime,
-      reflectionTime,
-      statsTime
     });
 
-    res.json(responseData);
-
-  } catch (error) {
-    console.error('Reflection error:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+  } catch (error: any) {
+    console.error('❌ Reflection creation error:', error);
     
-    // Provide more specific error responses
-    if (errorMessage.includes('rate limit') || errorMessage.includes('quota')) {
-      return res.status(429).json({
-        error: 'AI service temporarily unavailable',
-        code: 'AI_RATE_LIMIT',
-        retryAfter: '1 minute',
-        details: 'Please try again in a moment'
+    // Handle specific error types
+    if (error.code === 'DB_ERROR') {
+      return res.status(503).json({
+        error: 'Database temporarily unavailable',
+        code: 'DB_ERROR',
+        retryAfter: '30 seconds'
       });
     }
     
-    res.status(500).json({ 
-      error: 'Failed to process reflection', 
-      code: 'PROCESSING_ERROR',
-      details: process.env.NODE_ENV === 'development' ? errorMessage : 'Internal error',
-      retryAfter: '30 seconds'
+    // Generic error response
+    res.status(500).json({
+      error: 'Failed to create reflection',
+      code: 'INTERNAL_ERROR'
     });
   }
 });

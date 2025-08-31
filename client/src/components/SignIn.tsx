@@ -148,6 +148,17 @@ export function SignIn() {
               )}
             </div>
 
+            {/* Forgot Password Link */}
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={() => navigate('/forgot-password')}
+                className="text-sm text-blue-500 hover:text-blue-600 transition-colors"
+              >
+                Forgot Password?
+              </button>
+            </div>
+
             <button
               type="submit"
               disabled={isLoading}

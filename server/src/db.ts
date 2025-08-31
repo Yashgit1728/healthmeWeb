@@ -9,6 +9,8 @@ interface User {
   email: string;
   name: string;
   passwordHash: string;
+  resetToken?: string;
+  resetTokenExpiry?: Date;
   profile?: {
     aboutMe?: string;
   };
@@ -20,6 +22,7 @@ interface Message {
   text: string;
   isUser: boolean;
   createdAt: Date;
+  chatSessionId?: string; // Add chat session ID for conversation isolation
 }
 
 interface Reflection {
@@ -137,23 +140,39 @@ const dbOperations = {
     return (db.data.reflections || []).filter((r: Reflection) => r.userId === userId);
   },
 
-  async createReflection(reflection: Omit<Reflection, 'id' | 'createdAt'>): Promise<Reflection> {
+  async createReflection(userId: string, text: string, mood: number, tags: string[]): Promise<Reflection> {
     await db.read();
     if (!db.data) {
       db.data = defaultData;
       await db.write();
     }
-    const newReflection = {
-      ...reflection,
+    
+    // Ensure reflections array exists
+    if (!Array.isArray(db.data.reflections)) {
+      db.data.reflections = [];
+    }
+    
+    const newReflection: Reflection = {
       id: uuidv4(),
+      userId,
+      text,
+      mood,
+      tags,
+      response: '', // This will be set by the AI response
       createdAt: new Date()
     };
+    
+    console.log('Creating reflection:', { userId, text: text.substring(0, 50), mood, tagsCount: tags.length });
+    console.log('Current reflections count:', db.data.reflections.length);
+    
     db.data.reflections.push(newReflection);
     await db.write();
+    
+    console.log('Reflection created successfully, new count:', db.data.reflections.length);
     return newReflection;
   },
 
-  async getRecentMessages(userId: string, limit: number): Promise<Message[]> {
+  async getRecentMessages(userId: string, limit: number, chatSessionId?: string): Promise<Message[]> {
     await db.read();
     if (!db.data) {
       db.data = defaultData;
@@ -166,16 +185,23 @@ const dbOperations = {
       await db.write();
     }
     
-    const userMessages = db.data.messages
-      .filter((m: Message) => m.userId === userId)
+    let userMessages = db.data.messages
+      .filter((m: Message) => m.userId === userId);
+    
+    // Filter by chat session if provided
+    if (chatSessionId) {
+      userMessages = userMessages.filter((m: Message) => m.chatSessionId === chatSessionId);
+    }
+    
+    const sortedMessages = userMessages
       .sort((a: Message, b: Message) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       .slice(0, limit);
     
-    console.log(`Found ${userMessages.length} recent messages for user ${userId}`);
-    return userMessages;
+    console.log(`Found ${sortedMessages.length} recent messages for user ${userId} in chat session ${chatSessionId || 'default'}`);
+    return sortedMessages;
   },
 
-  async addMessage(userId: string, text: string, isUser: boolean): Promise<Message> {
+  async addMessage(userId: string, text: string, isUser: boolean, chatSessionId?: string): Promise<Message> {
     await db.read();
     if (!db.data) {
       db.data = defaultData;
@@ -192,10 +218,11 @@ const dbOperations = {
       userId,
       text,
       isUser,
-      createdAt: new Date()
+      createdAt: new Date(),
+      chatSessionId
     };
     
-    console.log('Adding message:', { userId, text: text.substring(0, 50), isUser });
+    console.log('Adding message:', { userId, text: text.substring(0, 50), isUser, chatSessionId });
     console.log('Current messages count:', db.data.messages.length);
     
     db.data.messages.push(message);
@@ -276,6 +303,81 @@ const dbOperations = {
     const user = db.data.users.find((u: User) => u.id === id);
     console.log(`Looking for user with id: ${id}, found: ${!!user}`);
     return user;
+  },
+
+  async updateUserResetToken(userId: string, resetToken: string, expiry: Date): Promise<void> {
+    console.log(`🔍 updateUserResetToken called with:`, { userId, resetTokenLength: resetToken.length, expiry });
+    
+    await db.read();
+    console.log(`📖 Database read completed`);
+    
+    if (!db.data) {
+      console.log(`⚠️  No database data, initializing...`);
+      db.data = defaultData;
+      await db.write();
+      console.log(`✅ Database initialized with default data`);
+    }
+    
+    // Ensure users array exists
+    if (!Array.isArray(db.data.users)) {
+      console.log(`⚠️  Users array not found, creating...`);
+      db.data.users = [];
+      await db.write();
+      console.log(`✅ Users array created`);
+    }
+    
+    console.log(`🔍 Looking for user with ID: ${userId}`);
+    console.log(`🔍 Total users in database: ${db.data.users.length}`);
+    
+    const user = db.data.users.find((u: User) => u.id === userId);
+    if (!user) {
+      console.error(`❌ User with ID ${userId} not found in database`);
+      console.error(`❌ Available users:`, db.data.users.map(u => ({ id: u.id, email: u.email, name: u.name })));
+      throw new Error(`User with ID ${userId} not found`);
+    }
+    
+    console.log(`✅ User found: ${user.email} (${user.name})`);
+    console.log(`💾 Updating user reset token...`);
+    
+    user.resetToken = resetToken;
+    user.resetTokenExpiry = expiry;
+    
+    console.log(`💾 Attempting to write to database...`);
+    await db.write();
+    console.log(`✅ Reset token updated successfully for user: ${user.email}`);
+  },
+
+  async getUserByResetToken(resetToken: string): Promise<User | undefined> {
+    await db.read();
+    if (!db.data) {
+      db.data = defaultData;
+      await db.write();
+    }
+    
+    const user = db.data.users.find((u: User) => 
+      u.resetToken === resetToken && 
+      u.resetTokenExpiry && 
+      new Date(u.resetTokenExpiry) > new Date()
+    );
+    
+    return user;
+  },
+
+  async updateUserPassword(userId: string, newPasswordHash: string): Promise<void> {
+    await db.read();
+    if (!db.data) {
+      db.data = defaultData;
+      await db.write();
+    }
+    
+    const user = db.data.users.find((u: User) => u.id === userId);
+    if (user) {
+      user.passwordHash = newPasswordHash;
+      user.resetToken = undefined;
+      user.resetTokenExpiry = undefined;
+      await db.write();
+      console.log(`Password updated for user: ${user.email}`);
+    }
   },
 
   async getStats(userId: string, range: '7d' | '30d'): Promise<{

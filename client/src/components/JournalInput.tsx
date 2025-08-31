@@ -1,11 +1,12 @@
 import React, { useState, useCallback } from 'react';
 
 interface JournalInputProps {
-  onSubmit: (data: { text: string; mood: number; tags: string[] }) => void;
+  onSubmit: (data: { text: string; mood: number; tags: string[]; chatSessionId?: string }) => void;
   isLoading?: boolean;
+  chatSessionId?: string;
 }
 
-export function JournalInput({ onSubmit, isLoading }: JournalInputProps) {
+export function JournalInput({ onSubmit, isLoading, chatSessionId }: JournalInputProps) {
   const [text, setText] = useState('');
   const [mood, setMood] = useState(5);
   const [tags] = useState<string[]>([]);
@@ -14,10 +15,10 @@ export function JournalInput({ onSubmit, isLoading }: JournalInputProps) {
     e?.preventDefault();
     if (!text.trim() || isLoading) return;
     
-    onSubmit({ text: text.trim(), mood, tags });
+    onSubmit({ text: text.trim(), mood, tags, chatSessionId });
     setText('');
     setMood(5);
-  }, [text, mood, tags, onSubmit, isLoading]);
+  }, [text, mood, tags, chatSessionId, onSubmit, isLoading]);
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
