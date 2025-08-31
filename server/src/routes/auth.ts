@@ -114,21 +114,26 @@ router.post('/login', async (req, res) => {
   try {
     const { email, password } = parsed.data;
     
-    console.log(`Attempting login for user: ${email}`);
+    console.log(`🔐 Attempting login for user: ${email}`);
+    console.log(`🔑 JWT Secret info:`, {
+      hasSecret: !!JWT_SECRET,
+      secretLength: JWT_SECRET.length,
+      nodeEnv: process.env.NODE_ENV
+    });
     
     const user = await db.getUserByEmail(email);
     if (!user) {
-      console.log(`Login failed: User ${email} not found`);
+      console.log(`❌ Login failed: User ${email} not found`);
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
     const isValid = await bcrypt.compare(password, user.passwordHash);
     if (!isValid) {
-      console.log(`Login failed: Invalid password for user ${email}`);
+      console.log(`❌ Login failed: Invalid password for user ${email}`);
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    console.log(`User logged in successfully: ${user.email}`);
+    console.log(`✅ User logged in successfully: ${user.email}`);
 
     // Include both id (as sub) and email in JWT
     const token = jwt.sign(
@@ -139,6 +144,13 @@ router.post('/login', async (req, res) => {
       JWT_SECRET,
       { expiresIn: '7d' }
     );
+
+    console.log(`🎫 JWT Token generated:`, {
+      tokenLength: token.length,
+      tokenStart: token.substring(0, 10) + '...',
+      userId: user.id,
+      expiresIn: '7d'
+    });
 
     // Set both cookie and return token for localStorage
     res.cookie('token', token, {
@@ -155,7 +167,7 @@ router.post('/login', async (req, res) => {
       token: token
     });
   } catch (error) {
-    console.error('Login error:', error);
+    console.error('❌ Login error:', error);
     res.status(500).json({ error: 'Failed to log in' });
   }
 });

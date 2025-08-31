@@ -76,7 +76,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
+      console.log('🔐 Attempting login for:', email);
+      
       const response = await api.post<{ user: User; token: string }>('/auth/login', { email, password });
+      
+      console.log('✅ Login successful, token received:', {
+        tokenLength: response.data.token.length,
+        tokenStart: response.data.token.substring(0, 10) + '...',
+        userId: response.data.user.id
+      });
       
       // Store token
       localStorage.setItem('authToken', response.data.token);
@@ -88,8 +96,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Navigate to app
       navigate('/app');
     } catch (error) {
+      console.error('❌ Login failed:', error);
+      
       if (axios.isAxiosError(error)) {
-        throw new Error(error.response?.data?.error || 'Failed to sign in');
+        const errorMessage = error.response?.data?.error || 'Failed to sign in';
+        const errorCode = error.response?.data?.code;
+        
+        console.error('Login error details:', {
+          status: error.response?.status,
+          error: errorMessage,
+          code: errorCode,
+          responseData: error.response?.data
+        });
+        
+        // Handle specific error codes
+        if (errorCode === 'TOKEN_EXPIRED') {
+          throw new Error('Your session has expired. Please sign in again.');
+        } else if (errorCode === 'INVALID_TOKEN') {
+          throw new Error('Authentication error. Please try signing in again.');
+        } else if (error.response?.status === 401) {
+          throw new Error('Invalid email or password. Please check your credentials.');
+        } else {
+          throw new Error(errorMessage);
+        }
       }
       throw error;
     }
@@ -117,11 +146,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = async () => {
     try {
+      console.log('🚪 Attempting logout...');
+      
+      // Clear token and local state first
+      localStorage.removeItem('authToken');
+      delete api.defaults.headers.common['Authorization'];
+      queryClient.setQueryData(['me'], null);
+      queryClient.clear();
+      
+      // Then call server logout
       await api.post('/auth/logout');
+      
+      console.log('✅ Logout successful');
+      
+      // Navigate to signin
+      navigate('/signin');
     } catch (error) {
-      console.error('Logout failed:', error);
-    } finally {
-      // Clear token and local state
+      console.error('❌ Logout failed:', error);
+      
+      // Even if server logout fails, ensure local cleanup
       localStorage.removeItem('authToken');
       delete api.defaults.headers.common['Authorization'];
       queryClient.setQueryData(['me'], null);

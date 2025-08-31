@@ -1,11 +1,22 @@
 import axios from 'axios';
 
+// Better environment detection
+const isProduction = import.meta.env.PROD;
+const isDevelopment = import.meta.env.DEV;
+
+console.log('🌍 Environment detected:', {
+  isProduction,
+  isDevelopment,
+  baseURL: isProduction ? '/api' : 'http://localhost:3000'
+});
+
 const api = axios.create({
-  baseURL: import.meta.env.PROD ? '/api' : 'http://localhost:3000',
+  baseURL: isProduction ? '/api' : 'http://localhost:3000',
   withCredentials: true, // This enables sending/receiving cookies
   headers: {
     'Content-Type': 'application/json'
-  }
+  },
+  timeout: 10000, // 10 second timeout
 });
 
 // Add request interceptor to include auth token
@@ -14,24 +25,57 @@ api.interceptors.request.use(
     const token = localStorage.getItem('authToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+      console.log('📤 Request with auth token:', {
+        url: config.url,
+        method: config.method,
+        tokenLength: token.length,
+        tokenStart: token.substring(0, 10) + '...'
+      });
+    } else {
+      console.log('📤 Request without auth token:', {
+        url: config.url,
+        method: config.method
+      });
     }
     return config;
   },
   (error) => {
+    console.error('❌ Request interceptor error:', error);
     return Promise.reject(error);
   }
 );
 
 // Add response interceptor for better error handling
 api.interceptors.response.use(
-  response => response,
+  response => {
+    console.log('📥 Response received:', {
+      url: response.config.url,
+      status: response.status,
+      statusText: response.statusText
+    });
+    return response;
+  },
   error => {
+    console.error('❌ Response error:', {
+      url: error.config?.url,
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      error: error.message,
+      responseData: error.response?.data
+    });
+
     if (error.response?.status === 401) {
       // Clear any stored auth state on 401
-      console.log('Unauthorized - clearing auth state');
+      console.log('🔒 Unauthorized - clearing auth state');
       localStorage.removeItem('authToken');
-      // You might want to trigger a logout here or redirect
+      delete api.defaults.headers.common['Authorization'];
+      
+      // Redirect to login if we're not already there
+      if (window.location.pathname !== '/signin') {
+        window.location.href = '/signin';
+      }
     }
+    
     return Promise.reject(error);
   }
 );
