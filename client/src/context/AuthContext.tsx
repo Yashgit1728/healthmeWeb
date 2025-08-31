@@ -61,14 +61,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     staleTime: Infinity,
     refetchOnWindowFocus: false,
     refetchOnMount: true, // Changed to true to refetch on mount
-    enabled: !!localStorage.getItem('authToken'), // Only run if we have a token
-    onError: (error) => {
+    enabled: !!localStorage.getItem('authToken') // Only run if we have a token
+  });
+
+  // Handle errors separately
+  useEffect(() => {
+    if (error) {
       console.error('Auth query error:', error);
       // Clear invalid token on any error
       localStorage.removeItem('authToken');
       delete api.defaults.headers.common['Authorization'];
     }
-  });
+  }, [error]);
 
   const login = async (email: string, password: string) => {
     try {
@@ -126,7 +130,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const value = {
+  const value: AuthContextType = {
     user: user ?? null,
     isLoading,
     error: error as Error | null,
