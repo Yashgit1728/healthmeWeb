@@ -55,6 +55,44 @@ router.post('/register', async (req, res) => {
     
     console.log(`🔐 Attempting to register user: ${email}`);
     
+    // Server hardening: Check content type and handle edge cases
+    const contentType = req.headers['content-type'] || '';
+    console.log(`📋 Request content-type: ${contentType}`);
+    
+    // If the body came in as text (some proxies do this), try to parse once
+    if (typeof req.body === "string") {
+      try { 
+        req.body = JSON.parse(req.body); 
+        console.log('🔄 Parsed string body to JSON');
+      } catch (parseError) {
+        console.error('❌ Failed to parse string body:', parseError);
+      }
+    }
+    
+    // Validate that we have the required fields
+    if (typeof email !== "string" || typeof password !== "string" || typeof name !== "string") {
+      console.warn("[REGISTER] Bad body", { 
+        contentType, 
+        bodyKeys: Object.keys(req.body || {}),
+        emailType: typeof email,
+        passwordType: typeof password,
+        nameType: typeof name
+      });
+      return res.status(400).json({ 
+        error: 'Missing or invalid email/password/name',
+        code: 'BAD_REQUEST'
+      });
+    }
+    
+    // Check for unsupported content types
+    if (contentType.includes('multipart/form-data')) {
+      console.warn("[REGISTER] Unsupported content type: multipart/form-data");
+      return res.status(415).json({ 
+        error: 'Registration requests must use JSON content type',
+        code: 'UNSUPPORTED_MEDIA_TYPE_REGISTER'
+      });
+    }
+    
     const existingUser = await db.getUserByEmail(email);
     if (existingUser) {
       console.log(`❌ Registration failed: Email ${email} already registered`);
@@ -124,6 +162,43 @@ router.post('/login', async (req, res) => {
       nodeEnv: process.env.NODE_ENV,
       cookieName: COOKIE_NAME
     });
+    
+    // Server hardening: Check content type and handle edge cases
+    const contentType = req.headers['content-type'] || '';
+    console.log(`📋 Request content-type: ${contentType}`);
+    
+    // If the body came in as text (some proxies do this), try to parse once
+    if (typeof req.body === "string") {
+      try { 
+        req.body = JSON.parse(req.body); 
+        console.log('🔄 Parsed string body to JSON');
+      } catch (parseError) {
+        console.error('❌ Failed to parse string body:', parseError);
+      }
+    }
+    
+    // Validate that we have the required fields
+    if (typeof email !== "string" || typeof password !== "string") {
+      console.warn("[LOGIN] Bad body", { 
+        contentType, 
+        bodyKeys: Object.keys(req.body || {}),
+        emailType: typeof email,
+        passwordType: typeof password
+      });
+      return res.status(400).json({ 
+        error: 'Missing or invalid email/password',
+        code: 'BAD_REQUEST'
+      });
+    }
+    
+    // Check for unsupported content types
+    if (contentType.includes('multipart/form-data')) {
+      console.warn("[LOGIN] Unsupported content type: multipart/form-data");
+      return res.status(415).json({ 
+        error: 'Login requests must use JSON content type',
+        code: 'UNSUPPORTED_MEDIA_TYPE_LOGIN'
+      });
+    }
     
     const user = await db.getUserByEmail(email);
     if (!user) {

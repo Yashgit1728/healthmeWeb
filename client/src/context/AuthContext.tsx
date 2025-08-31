@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import api from '../api/axios';
+import api, { postJson } from '../api/axios';
 
 export interface User {
   id: string;
@@ -61,7 +61,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       console.log('🔐 Attempting login for:', email);
       
-      const response = await api.post<{ user: User }>('/auth/login', { email, password });
+      // Use postJson to guarantee JSON content type and prevent header contamination
+      const response = await postJson<{ user: User }>('/auth/login', { email, password });
       
       console.log('✅ Login successful, user data received:', {
         userId: response.data.user.id,
@@ -110,8 +111,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       console.log('📝 Attempting registration for:', email);
       
-      // Register the user
-      const response = await api.post<{ user: User }>('/auth/register', { name, email, password });
+      // Use postJson to guarantee JSON content type and prevent header contamination
+      const response = await postJson<{ user: User }>('/auth/register', { name, email, password });
       
       console.log('✅ Registration successful, user data received:', {
         userId: response.data.user.id,
@@ -143,8 +144,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       queryClient.setQueryData(['me'], null);
       queryClient.clear();
       
-      // Then call server logout (this will clear the cookie)
-      await api.post('/auth/logout');
+      // Use postJson to guarantee JSON content type and prevent header contamination
+      await postJson('/auth/logout', {});
       
       console.log('✅ Logout successful');
       
