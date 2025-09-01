@@ -27,16 +27,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
+  // Check for existing token on mount
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      // Set the token in axios headers
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+  }, []);
+
   const { data: user, isLoading, error } = useQuery({
     queryKey: ['me'],
     queryFn: async () => {
       try {
-        // Try to get user data from the /me endpoint
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+          return null;
+        }
+        
         const response = await api.get<User>('/auth/me');
         return response.data;
       } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 401) {
-          // User is not authenticated, return null
+          // Clear invalid token
+          localStorage.removeItem('authToken');
+          delete api.defaults.headers.common['Authorization'];
           return null;
         }
         throw error;
@@ -45,32 +60,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     retry: false,
     staleTime: Infinity,
     refetchOnWindowFocus: false,
-    refetchOnMount: true
+    refetchOnMount: true, // Changed to true to refetch on mount
+    enabled: !!localStorage.getItem('authToken') // Only run if we have a token
   });
 
   // Handle errors separately
   useEffect(() => {
     if (error) {
       console.error('Auth query error:', error);
-      // Clear user data on any error
-      queryClient.setQueryData(['me'], null);
+      // Clear invalid token on any error
+      localStorage.removeItem('authToken');
+      delete api.defaults.headers.common['Authorization'];
     }
-  }, [error, queryClient]);
+  }, [error]);
 
   const login = async (email: string, password: string) => {
     try {
       console.log('🔐 Attempting login for:', email);
       
-      const response = await api.post<{ user: User }>('/auth/login', { email, password });
+      const response = await api.post<{ user: User; token: string }>('/auth/login', { email, password });
       
-      console.log('✅ Login successful, user data received:', {
-        userId: response.data.user.id,
-        email: response.data.user.email,
-        name: response.data.user.name
+      console.log('✅ Login successful, token received:', {
+        tokenLength: response.data.token.length,
+        tokenStart: response.data.token.substring(0, 10) + '...',
+        userId: response.data.user.id
       });
       
-      // No need to store token - it's now in httpOnly cookie
-      // Just set user data
+      // Store token
+      localStorage.setItem('authToken', response.data.token);
+      api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+      
+      // Set user data immediately
       queryClient.setQueryData(['me'], response.data.user);
       
       // Navigate to app
@@ -94,8 +114,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           throw new Error('Your session has expired. Please sign in again.');
         } else if (errorCode === 'INVALID_TOKEN') {
           throw new Error('Authentication error. Please try signing in again.');
-        } else if (errorCode === 'INVALID_CREDENTIALS') {
-          throw new Error('Invalid email or password. Please check your credentials.');
         } else if (error.response?.status === 401) {
           throw new Error('Invalid email or password. Please check your credentials.');
         } else {
@@ -108,26 +126,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const register = async (name: string, email: string, password: string) => {
     try {
-      console.log('📝 Attempting registration for:', email);
-      
       // Register the user
-      const response = await api.post<{ user: User }>('/auth/register', { name, email, password });
+      const response = await api.post<{ user: User; token: string }>('/auth/register', { name, email, password });
       
-      console.log('✅ Registration successful, user data received:', {
-        userId: response.data.user.id,
-        email: response.data.user.email,
-        name: response.data.user.name
-      });
-      
-      // No need to store token - it's now in httpOnly cookie
-      // Just set user data
+      // Store token and user data
+      localStorage.setItem('authToken', response.data.token);
+      api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
       queryClient.setQueryData(['me'], response.data.user);
       
       // Navigate to app
       navigate('/app');
     } catch (error) {
-      console.error('❌ Registration failed:', error);
-      
       if (axios.isAxiosError(error)) {
         throw new Error(error.response?.data?.error || 'Failed to register');
       }
@@ -139,11 +148,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       console.log('🚪 Attempting logout...');
       
-      // Clear local state first
+      // Clear token and local state first
+      localStorage.removeItem('authToken');
+      delete api.defaults.headers.common['Authorization'];
       queryClient.setQueryData(['me'], null);
       queryClient.clear();
       
-      // Then call server logout (this will clear the cookie)
+      // Then call server logout
       await api.post('/auth/logout');
       
       console.log('✅ Logout successful');
@@ -154,6 +165,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.error('❌ Logout failed:', error);
       
       // Even if server logout fails, ensure local cleanup
+      localStorage.removeItem('authToken');
+      delete api.defaults.headers.common['Authorization'];
       queryClient.setQueryData(['me'], null);
       queryClient.clear();
       navigate('/signin');

@@ -19,14 +19,24 @@ const api = axios.create({
   timeout: 10000, // 10 second timeout
 });
 
-// Add request interceptor for logging (no more token handling needed)
+// Add request interceptor to include auth token
 api.interceptors.request.use(
   (config) => {
-    console.log('📤 Request:', {
-      url: config.url,
-      method: config.method,
-      withCredentials: config.withCredentials
-    });
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+      console.log('📤 Request with auth token:', {
+        url: config.url,
+        method: config.method,
+        tokenLength: token.length,
+        tokenStart: token.substring(0, 10) + '...'
+      });
+    } else {
+      console.log('📤 Request without auth token:', {
+        url: config.url,
+        method: config.method
+      });
+    }
     return config;
   },
   (error) => {
@@ -57,6 +67,8 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       // Clear any stored auth state on 401
       console.log('🔒 Unauthorized - clearing auth state');
+      localStorage.removeItem('authToken');
+      delete api.defaults.headers.common['Authorization'];
       
       // Redirect to login if we're not already there
       if (window.location.pathname !== '/signin') {

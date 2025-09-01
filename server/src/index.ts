@@ -15,12 +15,6 @@ import db from './db';
 
 const app = express();
 
-// Trust proxy for production (important for cookies and secure headers)
-if (process.env.NODE_ENV === 'production') {
-  app.set('trust proxy', 1);
-  console.log('🔒 Production mode: trust proxy enabled');
-}
-
 // Security middleware
 app.use(helmet({
   contentSecurityPolicy: false, // Disable for development
@@ -63,9 +57,7 @@ app.use(cors({
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  exposedHeaders: ['X-Reset-Debug'], // <-- Expose debug header for dev
-  preflightContinue: false,
-  optionsSuccessStatus: 204
+  exposedHeaders: ['X-Reset-Debug'] // <-- Expose debug header for dev
 }));
 app.use(express.json({ limit: '10mb' })); // Limit request body size
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));

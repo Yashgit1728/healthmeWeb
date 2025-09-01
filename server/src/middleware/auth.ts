@@ -2,15 +2,12 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { ENV } from '../env';
 
-const COOKIE_NAME = process.env.COOKIE_NAME || 'accessToken';
-
 declare global {
   namespace Express {
     interface Request {
       user?: {
         id: string;
         email: string;
-        name: string;
       };
     }
   }
@@ -18,10 +15,10 @@ declare global {
 
 export function authMiddleware(req: Request, res: Response, next: NextFunction) {
   // Check for token in cookies first (HTTP-only cookies)
-  let token = req.cookies[COOKIE_NAME];
+  let token = req.cookies.token;
   let tokenSource = 'cookie';
   
-  // If no cookie token, check Authorization header (for backward compatibility)
+  // If no cookie token, check Authorization header (for localStorage tokens)
   if (!token) {
     const authHeader = req.headers.authorization;
     if (authHeader && authHeader.startsWith('Bearer ')) {
@@ -36,13 +33,9 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
       cookieKeys: req.cookies ? Object.keys(req.cookies) : [],
       hasAuthHeader: !!req.headers.authorization,
       userAgent: req.headers['user-agent'],
-      origin: req.headers.origin,
-      cookieName: COOKIE_NAME
+      origin: req.headers.origin
     });
-    return res.status(401).json({ 
-      error: 'No token provided',
-      code: 'NO_TOKEN'
-    });
+    return res.status(401).json({ error: 'No token provided' });
   }
 
   try {
@@ -52,14 +45,12 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
       tokenLength: token.length,
       tokenStart: token.substring(0, 10) + '...',
       jwtSecretLength: ENV.JWT_SECRET.length,
-      nodeEnv: ENV.NODE_ENV,
-      cookieName: COOKIE_NAME
+      nodeEnv: ENV.NODE_ENV
     });
 
-    const decoded = jwt.verify(token, ENV.JWT_SECRET, { clockTolerance: 5 }) as {
+    const decoded = jwt.verify(token, ENV.JWT_SECRET) as {
       sub: string;
       email: string;
-      name: string;
       iat?: number;
       exp?: number;
     };
@@ -68,7 +59,6 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
     console.log('✅ Token verified successfully:', {
       userId: decoded.sub,
       email: decoded.email,
-      name: decoded.name,
       issuedAt: decoded.iat ? new Date(decoded.iat * 1000).toISOString() : 'unknown',
       expiresAt: decoded.exp ? new Date(decoded.exp * 1000).toISOString() : 'unknown',
       currentTime: new Date().toISOString()
@@ -76,8 +66,7 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
 
     req.user = {
       id: decoded.sub,
-      email: decoded.email,
-      name: decoded.name
+      email: decoded.email
     };
 
     next();
@@ -88,26 +77,16 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
       tokenStart: token.substring(0, 10) + '...',
       jwtSecretLength: ENV.JWT_SECRET.length,
       nodeEnv: ENV.NODE_ENV,
-      tokenSource,
-      cookieName: COOKIE_NAME
+      tokenSource
     });
     
     // Provide more specific error messages
     if (error instanceof jwt.TokenExpiredError) {
-      return res.status(401).json({ 
-        error: 'Token expired',
-        code: 'TOKEN_EXPIRED'
-      });
+      return res.status(401).json({ error: 'Token expired', code: 'TOKEN_EXPIRED' });
     } else if (error instanceof jwt.JsonWebTokenError) {
-      return res.status(401).json({ 
-        error: 'Invalid token format',
-        code: 'INVALID_TOKEN'
-      });
+      return res.status(401).json({ error: 'Invalid token format', code: 'INVALID_TOKEN' });
     } else {
-      return res.status(401).json({ 
-        error: 'Invalid token',
-        code: 'AUTH_FAILED'
-      });
+      return res.status(401).json({ error: 'Invalid token', code: 'AUTH_FAILED' });
     }
   }
 }

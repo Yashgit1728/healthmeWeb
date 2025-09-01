@@ -8,7 +8,6 @@ import { sendResetEmail } from '../services/mailer';
 
 const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret';
-const COOKIE_NAME = process.env.COOKIE_NAME || 'accessToken';
 
 // Validate JWT secret
 if (!process.env.JWT_SECRET) {
@@ -21,7 +20,7 @@ const isDev = () => process.env.NODE_ENV !== 'production';
 const UserSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
-  name: z.string().min(2, 'Name must be at least 2 characters')
+  name: z.string().min(1, 'Name is required')
 });
 
 const LoginSchema = z.object({
@@ -53,11 +52,11 @@ router.post('/register', async (req, res) => {
   try {
     const { email, password, name } = parsed.data;
     
-    console.log(`🔐 Attempting to register user: ${email}`);
+    console.log(`Attempting to register user: ${email}`);
     
     const existingUser = await db.getUserByEmail(email);
     if (existingUser) {
-      console.log(`❌ Registration failed: Email ${email} already registered`);
+      console.log(`Registration failed: Email ${email} already registered`);
       return res.status(400).json({ error: 'Email already registered' });
     }
 
@@ -68,36 +67,34 @@ router.post('/register', async (req, res) => {
       passwordHash: hash
     });
 
-    console.log(`✅ User registered successfully: ${user.email}`);
+    console.log(`User registered successfully: ${user.email}`);
 
-    // Create JWT token
-    const payload = { 
-      sub: user.id,
-      email: user.email,
-      name: user.name
-    };
-    
-    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' });
+    // Include both id (as sub) and email in JWT
+    const token = jwt.sign(
+      { 
+        sub: user.id,
+        email: user.email 
+      },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
 
-    // Set secure cookie
-    res.cookie(COOKIE_NAME, token, {
+    // Set both cookie and return token for localStorage
+    res.cookie('token', token, {
       httpOnly: true,
-      secure: !isDev(), // true in production
-      sameSite: isDev() ? 'lax' : 'none',
-      path: '/',
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-    });
-
-    // Return user data (no token in response body for security)
-    res.status(201).json({
+    }).json({
       user: {
         id: user.id,
         email: user.email,
         name: user.name
-      }
+      },
+      token: token
     });
   } catch (error) {
-    console.error('❌ Registration error:', error);
+    console.error('Registration error:', error);
     res.status(500).json({ error: 'Failed to register user' });
   }
 });
@@ -121,38 +118,32 @@ router.post('/login', async (req, res) => {
     console.log(`🔑 JWT Secret info:`, {
       hasSecret: !!JWT_SECRET,
       secretLength: JWT_SECRET.length,
-      nodeEnv: process.env.NODE_ENV,
-      cookieName: COOKIE_NAME
+      nodeEnv: process.env.NODE_ENV
     });
     
     const user = await db.getUserByEmail(email);
     if (!user) {
       console.log(`❌ Login failed: User ${email} not found`);
-      return res.status(401).json({ 
-        error: 'Invalid credentials',
-        code: 'INVALID_CREDENTIALS'
-      });
+      return res.status(401).json({ error: 'Invalid credentials' });
     }
 
     const isValid = await bcrypt.compare(password, user.passwordHash);
     if (!isValid) {
       console.log(`❌ Login failed: Invalid password for user ${email}`);
-      return res.status(401).json({ 
-        error: 'Invalid credentials',
-        code: 'INVALID_CREDENTIALS'
-      });
+      return res.status(401).json({ error: 'Invalid credentials' });
     }
 
     console.log(`✅ User logged in successfully: ${user.email}`);
 
-    // Create JWT token
-    const payload = { 
-      sub: user.id,
-      email: user.email,
-      name: user.name
-    };
-    
-    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' });
+    // Include both id (as sub) and email in JWT
+    const token = jwt.sign(
+      { 
+        sub: user.id,
+        email: user.email 
+      },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
 
     console.log(`🎫 JWT Token generated:`, {
       tokenLength: token.length,
@@ -161,22 +152,19 @@ router.post('/login', async (req, res) => {
       expiresIn: '7d'
     });
 
-    // Set secure cookie
-    res.cookie(COOKIE_NAME, token, {
+    // Set both cookie and return token for localStorage
+    res.cookie('token', token, {
       httpOnly: true,
-      secure: !isDev(), // true in production
-      sameSite: isDev() ? 'lax' : 'none',
-      path: '/',
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-    });
-
-    // Return user data (no token in response body for security)
-    res.json({
+    }).json({
       user: {
         id: user.id,
         email: user.email,
         name: user.name
-      }
+      },
+      token: token
     });
   } catch (error) {
     console.error('❌ Login error:', error);
@@ -185,81 +173,7 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/logout', (req, res) => {
-  console.log('🚪 User logging out');
-  
-  // Clear the cookie
-  res.clearCookie(COOKIE_NAME, {
-    httpOnly: true,
-    secure: !isDev(),
-    sameSite: isDev() ? 'lax' : 'none',
-    path: '/'
-  });
-  
-  res.json({ message: 'Logged out successfully' });
-});
-
-// Health check endpoint
-router.get('/health', (req, res) => {
-  res.json({ 
-    ok: true, 
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development'
-  });
-});
-
-// Whoami endpoint to test authentication
-router.get('/me', async (req, res) => {
-  try {
-    // Get token from cookie
-    const token = req.cookies[COOKIE_NAME];
-    
-    if (!token) {
-      return res.status(401).json({ 
-        error: 'No token provided',
-        code: 'NO_TOKEN'
-      });
-    }
-
-    // Verify token
-    const decoded = jwt.verify(token, JWT_SECRET) as {
-      sub: string;
-      email: string;
-      name: string;
-    };
-
-    // Get fresh user data from database
-    const user = await db.getUserByEmail(decoded.email);
-    if (!user) {
-      return res.status(401).json({ 
-        error: 'User not found',
-        code: 'USER_NOT_FOUND'
-      });
-    }
-
-    res.json({
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name
-      }
-    });
-  } catch (error) {
-    console.error('❌ /me endpoint error:', error);
-    
-    if (error instanceof jwt.TokenExpiredError) {
-      return res.status(401).json({ 
-        error: 'Token expired',
-        code: 'TOKEN_EXPIRED'
-      });
-    } else if (error instanceof jwt.JsonWebTokenError) {
-      return res.status(401).json({ 
-        error: 'Invalid token',
-        code: 'INVALID_TOKEN'
-      });
-    }
-    
-    res.status(500).json({ error: 'Internal server error' });
-  }
+  res.clearCookie('token').json({ message: 'Logged out successfully' });
 });
 
 router.post('/forgot-password', async (req, res) => {
@@ -377,6 +291,28 @@ router.post('/forgot-password', async (req, res) => {
       message: 'If that email exists, we\'ve sent a reset link.',
       success: true
     });
+  }
+});
+
+router.get('/me', async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ error: 'Not authenticated' });
+  }
+
+  try {
+    const user = await db.getUserById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({
+      id: user.id,
+      email: user.email,
+      name: user.name
+    });
+  } catch (error) {
+    console.error('Profile fetch error:', error);
+    res.status(500).json({ error: 'Failed to fetch profile' });
   }
 });
 
