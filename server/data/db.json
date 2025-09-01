@@ -2626,17 +2626,6 @@
       "tags": [],
       "response": "",
       "createdAt": "2025-08-31T22:56:42.071Z"
-    },
-    {
-      "id": "4578c2ff-f501-47db-b0ca-f1bef9e24cff",
-      "userId": "2834dfc7-b538-452f-9951-bbc178d6af22",
-      "text": "Test reflection",
-      "mood": 5,
-      "tags": [
-        "test"
-      ],
-      "response": "",
-      "createdAt": "2025-08-31T23:10:50.680Z"
     }
   ],
   "users": [
@@ -2686,12 +2675,6 @@
       "name": "Test User",
       "passwordHash": "$2a$10$bfzvbE4bHQ1h.0WnMSsSbuhvjJXmglF9ovv0M2DA1vBWKzmdLvnEm",
       "id": "b709692f-b91f-4fe8-bfc8-361e865a67f3"
-    },
-    {
-      "email": "test-1756681849390@example.com",
-      "name": "Test User",
-      "passwordHash": "$2a$10$PHXlBtnDE4J7D7rDLyE7zelXug4S0Q0S39DbpV.Gtx2gjjSGG.B4W",
-      "id": "2834dfc7-b538-452f-9951-bbc178d6af22"
     }
   ],
   "messages": [
@@ -4118,14 +4101,6 @@
       "isUser": false,
       "createdAt": "2025-08-31T22:56:41.995Z",
       "chatSessionId": "chat_1756680867159_s4pj3iddg"
-    },
-    {
-      "id": "537a0300-2c5d-406e-b56b-a99fc28c2dfb",
-      "userId": "2834dfc7-b538-452f-9951-bbc178d6af22",
-      "text": "What's the biggest thing you're hoping to learn from this test reflection?",
-      "isUser": false,
-      "createdAt": "2025-08-31T23:10:50.648Z",
-      "chatSessionId": "test-session"
     }
   ]
 }

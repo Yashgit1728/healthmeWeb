@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import api, { chatApi } from './axios';
+import api from './axios';
 
 export interface Reflection {
   id: string;
@@ -79,8 +79,7 @@ export function useCreateReflection() {
   
   return useMutation<ReflectionResponse, Error, CreateReflectionData>({
     mutationFn: async (data) => {
-      // Use chatApi for reflection creation to prevent header contamination
-      const response = await chatApi.post('/reflections', data);
+      const response = await api.post('/reflections', data);
       return response.data;
     },
     onSuccess: (data) => {
@@ -96,8 +95,7 @@ export function useCreateReflection() {
 export function useSuggestions() {
   return useMutation({
     mutationFn: async ({ problem, category }: { problem: string; category: 'emotional' | 'mental' | 'physical' }) => {
-      // Use chatApi for suggestions to prevent header contamination
-      const response = await chatApi.post('/reflections/suggestions', { problem, category });
+      const response = await api.post('/reflections/suggestions', { problem, category });
       return response.data;
     },
   });
