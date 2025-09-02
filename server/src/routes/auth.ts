@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -37,7 +37,7 @@ const ResetPasswordSchema = z.object({
   password: z.string().min(6, 'Password must be at least 6 characters')
 });
 
-router.post('/register', async (req, res) => {
+router.post('/register', async (req: Request, res: Response) => {
   const parsed = UserSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({
@@ -99,7 +99,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', async (req: Request, res: Response) => {
   const parsed = LoginSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({
@@ -172,11 +172,11 @@ router.post('/login', async (req, res) => {
   }
 });
 
-router.post('/logout', (req, res) => {
+router.post('/logout', (req: Request, res: Response) => {
   res.clearCookie('token').json({ message: 'Logged out successfully' });
 });
 
-router.post('/forgot-password', async (req, res) => {
+router.post('/forgot-password', async (req: Request, res: Response) => {
   const parsed = ForgotPasswordSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({
@@ -294,7 +294,7 @@ router.post('/forgot-password', async (req, res) => {
   }
 });
 
-router.get('/me', async (req, res) => {
+router.get('/me', async (req: Request, res: Response) => {
   if (!req.user) {
     return res.status(401).json({ error: 'Not authenticated' });
   }
@@ -316,7 +316,7 @@ router.get('/me', async (req, res) => {
   }
 });
 
-router.post('/reset-password', async (req, res) => {
+router.post('/reset-password', async (req: Request, res: Response) => {
   const parsed = ResetPasswordSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({

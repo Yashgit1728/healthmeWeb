@@ -2,7 +2,7 @@
 import { ENV } from '../env';
 
 // Import both database implementations
-import jsonDb from './db';
+import jsonDb from '../db';
 import { db as postgresDb } from './postgres';
 
 // Choose database based on environment

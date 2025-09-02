@@ -245,7 +245,7 @@ router.post('/', sanitizeInput, async (req: Request, res: Response) => {
 });
 
 // New endpoint for AI-powered suggestions and resolutions
-router.post('/suggestions', userRateLimit(10, 15 * 60 * 1000), async (req, res) => {
+router.post('/suggestions', userRateLimit(10, 15 * 60 * 1000), async (req: Request, res: Response) => {
   try {
     const { problem, category = 'emotional' } = req.body;
     
