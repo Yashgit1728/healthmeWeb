@@ -216,8 +216,42 @@ app.use('*', (req: Request, res: Response) => {
   });
 });
 
-app.listen(Number(ENV.PORT), () => {
+// Auto-migration for PostgreSQL (runs on startup)
+async function runAutoMigration() {
+  if (ENV.NODE_ENV === 'production' && ENV.DATABASE_URL) {
+    try {
+      console.log('🔄 Running PostgreSQL auto-migration...');
+      
+      const { Pool } = require('pg');
+      const fs = require('fs');
+      const path = require('path');
+      
+      const pool = new Pool({
+        connectionString: ENV.DATABASE_URL,
+        ssl: { rejectUnauthorized: false },
+      });
+
+      // Read schema file
+      const schemaPath = path.join(__dirname, 'db', 'postgres-schema.sql');
+      const schema = fs.readFileSync(schemaPath, 'utf8');
+      
+      // Execute schema
+      await pool.query(schema);
+      await pool.end();
+      
+      console.log('✅ PostgreSQL auto-migration completed successfully!');
+    } catch (error) {
+      console.error('❌ Auto-migration failed:', error);
+      // Don't exit - let the app continue with JSON database
+    }
+  }
+}
+
+app.listen(Number(ENV.PORT), async () => {
   console.log(`🚀 Server running on port ${ENV.PORT}`);
   console.log(`📊 Health check: http://localhost:${ENV.PORT}/health`);
   console.log(`🔍 Status: http://localhost:${ENV.PORT}/status`);
+  
+  // Run auto-migration after server starts
+  await runAutoMigration();
 });

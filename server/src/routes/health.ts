@@ -90,6 +90,30 @@ router.get('/users', async (req: Request, res: Response) => {
   try {
     const allUsers = await db.getAllUsers?.() || [];
     
+    // Debug: Check database path and file existence
+    const fs = require('fs');
+    const path = require('path');
+    
+    let dbPath = 'unknown';
+    let dbExists = false;
+    let dbSize = 0;
+    
+    try {
+      if (process.env.NODE_ENV === 'production') {
+        dbPath = path.join('/opt/render/project/src/server/data', 'healthme-db.json');
+      } else {
+        dbPath = path.join(__dirname, '../data/db.json');
+      }
+      
+      dbExists = fs.existsSync(dbPath);
+      if (dbExists) {
+        const stats = fs.statSync(dbPath);
+        dbSize = stats.size;
+      }
+    } catch (error) {
+      console.error('Path check error:', error);
+    }
+    
     res.json({
       totalUsers: allUsers.length,
       users: allUsers.map(u => ({
@@ -98,6 +122,13 @@ router.get('/users', async (req: Request, res: Response) => {
         name: u.name,
         createdAt: (u as any).createdAt
       })),
+      debug: {
+        databasePath: dbPath,
+        databaseExists: dbExists,
+        databaseSize: dbSize,
+        nodeEnv: process.env.NODE_ENV,
+        hasDatabaseUrl: !!process.env.DATABASE_URL
+      },
       timestamp: new Date().toISOString()
     });
   } catch (error: any) {

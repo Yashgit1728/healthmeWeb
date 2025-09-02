@@ -417,6 +417,38 @@ export const db = {
     }
   },
 
+  // Journal operations
+  async addJournalEntry(userId: string, role: 'user' | 'assistant', content: string): Promise<void> {
+    const client = await getPool().connect();
+    try {
+      await client.query(
+        'INSERT INTO journal_entries (user_id, role, content) VALUES ($1, $2, $3)',
+        [userId, role, content]
+      );
+    } finally {
+      client.release();
+    }
+  },
+
+  async getJournalEntries(userId: string, limit = 100): Promise<Array<{id: string, role: string, content: string, createdAt: Date}>> {
+    const client = await getPool().connect();
+    try {
+      const result = await client.query(
+        'SELECT id, role, content, created_at FROM journal_entries WHERE user_id = $1 ORDER BY created_at DESC LIMIT $2',
+        [userId, limit]
+      );
+      
+      return result.rows.map(row => ({
+        id: row.id,
+        role: row.role,
+        content: row.content,
+        createdAt: new Date(row.created_at)
+      }));
+    } finally {
+      client.release();
+    }
+  },
+
   // Close connection pool
   async close(): Promise<void> {
     if (pool) {
