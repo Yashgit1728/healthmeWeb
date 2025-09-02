@@ -52,11 +52,18 @@ router.post('/register', async (req: Request, res: Response) => {
   try {
     const { email, password, name } = parsed.data;
     
-    console.log(`Attempting to register user: ${email}`);
+    console.log(`📝 Attempting to register user: ${email}`);
+    
+    // Debug: Check all users before registration
+    const allUsersBefore = await db.getAllUsers?.() || [];
+    console.log(`📊 Users before registration: ${allUsersBefore.length}`);
+    console.log(`👥 Existing users:`, allUsersBefore.map(u => ({ id: u.id, email: u.email, name: u.name })));
     
     const existingUser = await db.getUserByEmail(email);
+    console.log(`🔍 Existing user check for ${email}:`, existingUser ? 'FOUND' : 'NOT FOUND');
+    
     if (existingUser) {
-      console.log(`Registration failed: Email ${email} already registered`);
+      console.log(`❌ Registration failed: Email ${email} already registered`);
       return res.status(400).json({ error: 'Email already registered' });
     }
 
@@ -67,7 +74,12 @@ router.post('/register', async (req: Request, res: Response) => {
       passwordHash: hash
     });
 
-    console.log(`User registered successfully: ${user.email}`);
+    console.log(`✅ User registered successfully: ${user.email}`);
+    
+    // Debug: Check all users after registration
+    const allUsersAfter = await db.getAllUsers?.() || [];
+    console.log(`📊 Users after registration: ${allUsersAfter.length}`);
+    console.log(`👥 All users now:`, allUsersAfter.map(u => ({ id: u.id, email: u.email, name: u.name })));
 
     // Include both id (as sub) and email in JWT
     const token = jwt.sign(
@@ -100,8 +112,16 @@ router.post('/register', async (req: Request, res: Response) => {
 });
 
 router.post('/login', async (req: Request, res: Response) => {
+  console.log('🔐 Login attempt:', {
+    body: req.body,
+    origin: req.headers.origin,
+    userAgent: req.headers['user-agent'],
+    hasCookies: !!req.headers.cookie
+  });
+
   const parsed = LoginSchema.safeParse(req.body);
   if (!parsed.success) {
+    console.log('❌ Login validation failed:', parsed.error.issues);
     return res.status(400).json({
       errors: parsed.error.issues.map(issue => ({
         path: issue.path.join("."),
@@ -121,9 +141,22 @@ router.post('/login', async (req: Request, res: Response) => {
       nodeEnv: process.env.NODE_ENV
     });
     
+    // Debug: Check all users in database
+    const allUsers = await db.getAllUsers?.() || [];
+    console.log(`📊 Total users in database: ${allUsers.length}`);
+    console.log(`👥 All users:`, allUsers.map(u => ({ id: u.id, email: u.email, name: u.name })));
+    
     const user = await db.getUserByEmail(email);
+    console.log(`🔍 User lookup result for ${email}:`, user ? {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      hasPasswordHash: !!user.passwordHash
+    } : 'NOT FOUND');
+    
     if (!user) {
       console.log(`❌ Login failed: User ${email} not found`);
+      console.log(`🔍 Available emails:`, allUsers.map(u => u.email));
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
@@ -153,12 +186,20 @@ router.post('/login', async (req: Request, res: Response) => {
     });
 
     // Set both cookie and return token for localStorage
-    res.cookie('token', token, {
+    const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      sameSite: (process.env.NODE_ENV === 'production' ? 'none' : 'lax') as 'none' | 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-    }).json({
+    };
+    
+    console.log('🍪 Setting cookie with options:', {
+      ...cookieOptions,
+      tokenLength: token.length,
+      nodeEnv: process.env.NODE_ENV
+    });
+    
+    res.cookie('token', token, cookieOptions).json({
       user: {
         id: user.id,
         email: user.email,

@@ -11,6 +11,7 @@ import reflectionsRouter from './routes/reflections';
 import statsRouter from './routes/stats';
 import authRouter from './routes/auth';
 import debugRouter from './routes/debug';
+import healthRouter from './routes/health';
 import { authMiddleware } from './middleware/auth';
 import db from './db';
 
@@ -164,6 +165,7 @@ app.use('/auth', authRouter);
 app.use('/reflections', authMiddleware, reflectionsRouter);
 app.use('/stats', authMiddleware, statsRouter);
 app.use('/debug', debugRouter); // Debug routes (remove in production)
+app.use('/health', healthRouter); // Health check routes
 
 // Direct /me endpoint (same as /auth/me)
 app.get('/me', authMiddleware, async (req: Request, res: Response) => {
