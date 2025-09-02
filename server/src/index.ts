@@ -187,8 +187,8 @@ app.get('/me', authMiddleware, async (req: Request, res: Response) => {
 });
 
 // server/src/index.ts
-app.head('/', (_req, res) => res.sendStatus(200));        // quiet probes
-app.get('/', (_req, res) => res.redirect('/health'));     // or send JSON
+app.head('/', (_req: Request, res: Response) => res.sendStatus(200));        // quiet probes
+app.get('/', (_req: Request, res: Response) => res.redirect('/health'));     // or send JSON
 // app.get('/', (_req, res) => res.json({ ok: true, tip: 'See /health' }));
 
 // 404 handler
