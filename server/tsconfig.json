@@ -10,9 +10,8 @@
     "resolveJsonModule": true,
     "outDir": "dist",
     "strict": true,
-    "noImplicitAny": true,
-    "types": ["node"]
+    "noImplicitAny": true
   },
-  "include": ["src", "src/types.d.ts", "src/ambient.d.ts"],
+  "include": ["src", "src/ambient.d.ts"],
   "exclude": ["node_modules", "dist"]
 }
