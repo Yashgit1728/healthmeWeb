@@ -86,8 +86,11 @@ router.get('/', cacheMiddleware(), async (req: Request, res: Response) => {
 
   try {
     const startTime = Date.now();
+    console.log(`🔍 Getting reflections for user: ${req.user.id}`);
     const reflections = await db.getReflections(req.user.id);
     const duration = Date.now() - startTime;
+    
+    console.log(`📊 Found ${reflections.length} reflections for user ${req.user.id}`);
     
     // Log slow database queries
     if (duration > 500) {
@@ -151,8 +154,11 @@ router.post('/', sanitizeInput, async (req: Request, res: Response) => {
 
     // Get recent messages for conversation context (limit to last 6) - ONLY for this specific chat session
     const startTime = Date.now();
+    console.log(`💬 Getting recent messages for user: ${userId}, chatSession: ${chatSessionId}`);
     const recentMessages = await db.getRecentMessages(userId, 6, chatSessionId); // Pass chatSessionId
     const contextTime = Date.now() - startTime;
+    
+    console.log(`📨 Found ${recentMessages.length} recent messages for user ${userId}`);
 
     const conversationContext = recentMessages.map(msg => ({
       role: msg.isUser ? 'user' as const : 'assistant' as const,

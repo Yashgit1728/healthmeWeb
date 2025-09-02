@@ -10,6 +10,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import reflectionsRouter from './routes/reflections';
 import statsRouter from './routes/stats';
 import authRouter from './routes/auth';
+import debugRouter from './routes/debug';
 import { authMiddleware } from './middleware/auth';
 import db from './db';
 
@@ -162,6 +163,7 @@ app.get('/test-gemini', aiLimiter, async (_req: Request, res: Response) => {
 app.use('/auth', authRouter);
 app.use('/reflections', authMiddleware, reflectionsRouter);
 app.use('/stats', authMiddleware, statsRouter);
+app.use('/debug', debugRouter); // Debug routes (remove in production)
 
 // Direct /me endpoint (same as /auth/me)
 app.get('/me', authMiddleware, async (req: Request, res: Response) => {

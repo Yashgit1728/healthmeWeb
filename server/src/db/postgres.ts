@@ -361,6 +361,62 @@ export const db = {
     }
   },
 
+  // Debug methods (remove in production)
+  async getAllUsers(): Promise<User[]> {
+    const client = await getPool().connect();
+    try {
+      const result = await client.query('SELECT * FROM users');
+      return result.rows.map(row => ({
+        id: row.id,
+        email: row.email,
+        name: row.name,
+        passwordHash: row.password_hash,
+        aboutMe: row.about_me,
+        resetToken: row.reset_token,
+        resetTokenExpiry: row.reset_token_expiry,
+        createdAt: new Date(row.created_at),
+        updatedAt: new Date(row.updated_at)
+      }));
+    } finally {
+      client.release();
+    }
+  },
+
+  async getAllReflections(): Promise<Reflection[]> {
+    const client = await getPool().connect();
+    try {
+      const result = await client.query('SELECT * FROM reflections');
+      return result.rows.map(row => ({
+        id: row.id,
+        userId: row.user_id,
+        text: row.text,
+        mood: row.mood,
+        tags: row.tags ? JSON.parse(row.tags) : undefined,
+        response: row.response,
+        createdAt: new Date(row.created_at)
+      }));
+    } finally {
+      client.release();
+    }
+  },
+
+  async getAllMessages(): Promise<Message[]> {
+    const client = await getPool().connect();
+    try {
+      const result = await client.query('SELECT * FROM messages');
+      return result.rows.map(row => ({
+        id: row.id,
+        userId: row.user_id,
+        text: row.text,
+        isUser: row.is_user,
+        chatSessionId: row.chat_session_id,
+        createdAt: new Date(row.created_at)
+      }));
+    } finally {
+      client.release();
+    }
+  },
+
   // Close connection pool
   async close(): Promise<void> {
     if (pool) {

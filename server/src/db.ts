@@ -380,6 +380,34 @@ const dbOperations = {
     }
   },
 
+  // Debug methods (remove in production)
+  async getAllUsers(): Promise<User[]> {
+    await db.read();
+    if (!db.data) {
+      db.data = defaultData;
+      await db.write();
+    }
+    return db.data.users || [];
+  },
+
+  async getAllReflections(): Promise<Reflection[]> {
+    await db.read();
+    if (!db.data) {
+      db.data = defaultData;
+      await db.write();
+    }
+    return db.data.reflections || [];
+  },
+
+  async getAllMessages(): Promise<Message[]> {
+    await db.read();
+    if (!db.data) {
+      db.data = defaultData;
+      await db.write();
+    }
+    return db.data.messages || [];
+  },
+
   async getStats(userId: string, range: '7d' | '30d'): Promise<{
     reflectionsCount: number;
     avgMood: number;
