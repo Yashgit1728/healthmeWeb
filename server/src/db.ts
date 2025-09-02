@@ -50,8 +50,19 @@ const defaultData: DbData = {
 // Initialize database with proper path handling for production
 const getDbPath = () => {
   if (process.env.NODE_ENV === 'production') {
-    // In production, use /tmp directory which is writable on Render
-    return path.join('/tmp', 'healthme-db.json');
+    // In production, try multiple possible persistent locations
+    const possiblePaths = [
+      path.join('/opt/render/project/src/server/data', 'healthme-db.json'),
+      path.join('/opt/render/project/data', 'healthme-db.json'),
+      path.join(process.cwd(), 'data', 'healthme-db.json'),
+      path.join('/tmp', 'healthme-db.json') // Fallback
+    ];
+    
+    // Use the first path for now, but log all options
+    console.log('🗄️ Database path options:', possiblePaths);
+    const selectedPath = possiblePaths[0];
+    console.log('🗄️ Selected database path:', selectedPath);
+    return selectedPath;
   } else {
     // In development, use relative path from src
     return path.join(__dirname, '../data/db.json');
