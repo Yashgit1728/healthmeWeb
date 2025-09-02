@@ -11,7 +11,9 @@ const usePostgres = ENV.NODE_ENV === 'production' && !!ENV.DATABASE_URL;
 console.log('🗄️  Database configuration:', {
   type: usePostgres ? 'PostgreSQL' : 'JSON',
   nodeEnv: ENV.NODE_ENV,
-  hasDatabaseUrl: !!ENV.DATABASE_URL
+  hasDatabaseUrl: !!ENV.DATABASE_URL,
+  databaseUrlLength: ENV.DATABASE_URL?.length || 0,
+  databaseUrlStart: ENV.DATABASE_URL?.substring(0, 20) + '...' || 'none'
 });
 
 // Export the appropriate database

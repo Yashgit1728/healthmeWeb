@@ -114,6 +114,10 @@ router.get('/users', async (req: Request, res: Response) => {
       console.error('Path check error:', error);
     }
     
+    // Check which database is actually being used
+    const dbType = process.env.NODE_ENV === 'production' && process.env.DATABASE_URL ? 'PostgreSQL' : 'JSON';
+    const dbAdapter = db.constructor.name;
+    
     res.json({
       totalUsers: allUsers.length,
       users: allUsers.map(u => ({
@@ -127,7 +131,10 @@ router.get('/users', async (req: Request, res: Response) => {
         databaseExists: dbExists,
         databaseSize: dbSize,
         nodeEnv: process.env.NODE_ENV,
-        hasDatabaseUrl: !!process.env.DATABASE_URL
+        hasDatabaseUrl: !!process.env.DATABASE_URL,
+        expectedDbType: dbType,
+        actualDbAdapter: dbAdapter,
+        dbMethods: Object.getOwnPropertyNames(db).filter(name => typeof (db as any)[name] === 'function')
       },
       timestamp: new Date().toISOString()
     });
