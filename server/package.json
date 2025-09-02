@@ -12,6 +12,7 @@
     "build": "rimraf dist && tsc -p tsconfig.json",
     "start": "node dist/index.js",
     "db:migrate": "ts-node -r dotenv/config src/db/migrate.ts",
+    "db:migrate:postgres": "ts-node -r dotenv/config src/db/migrate-postgres.ts",
     "db:seed": "ts-node -r dotenv/config src/db/seed.ts"
   },
   "keywords": [],
@@ -20,6 +21,7 @@
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "@types/nodemailer": "^7.0.1",
+    "@types/pg": "^8.15.5",
     "bcryptjs": "^2.4.3",
     "compression": "^1.8.1",
     "cookie-parser": "^1.4.6",
@@ -31,6 +33,7 @@
     "jsonwebtoken": "^9.0.2",
     "lowdb": "^7.0.1",
     "nodemailer": "^7.0.6",
+    "pg": "^8.16.3",
     "resend": "^6.0.2",
     "rimraf": "^5.0.10",
     "sqlite3": "^5.1.7",

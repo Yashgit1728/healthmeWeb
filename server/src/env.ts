@@ -53,7 +53,8 @@ export const ENV = {
   GOOGLE_API_KEY: must("GOOGLE_API_KEY"),
   PORT: process.env.PORT || "3000",
   JWT_SECRET: must("JWT_SECRET"),
-  NODE_ENV: process.env.NODE_ENV || "development"
+  NODE_ENV: process.env.NODE_ENV || "development",
+  DATABASE_URL: process.env.DATABASE_URL // Optional for development
 };
 
 // Debug log during startup (remove in production)

@@ -50,8 +50,8 @@ const defaultData: DbData = {
 // Initialize database with proper path handling for production
 const getDbPath = () => {
   if (process.env.NODE_ENV === 'production') {
-    // In production, use absolute path to ensure consistency
-    return path.join(process.cwd(), 'data', 'db.json');
+    // In production, use /tmp directory which is writable on Render
+    return path.join('/tmp', 'healthme-db.json');
   } else {
     // In development, use relative path from src
     return path.join(__dirname, '../data/db.json');
